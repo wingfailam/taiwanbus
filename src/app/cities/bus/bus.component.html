@@ -1,0 +1,9 @@
+<!-- <p>selectedCity:{{selectedCity}}</p> -->
+<h3>公車路線</h3>
+<ng-select [items]="bus$ | async" bindLabel="RouteName.Zh_tw" bindValue="RouteUID" [(ngModel)]="
+    selectedBus" (change)="selectedBusChange()">
+</ng-select>
+
+<br>
+<app-stops [selectedCity]="selectedCity" [selectedBus]="selectedBus" [selectedBusName]=" selectedBusName">
+</app-stops>

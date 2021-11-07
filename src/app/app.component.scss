@@ -1,0 +1,23 @@
+.app-container {
+    // display: flex;
+    // justify-content: center;
+    // align-items: center;
+    // min-width: 400px;
+    max-width: 520px;
+}
+img {
+    position: absolute;
+    right: 0;
+    bottom: -10px;
+    width: 75px;
+}
+h2 {
+    display: inline;
+}
+.nav {
+    position: relative;
+    height: 72px;
+    display: flex;
+    // justify-content: space-between;
+    align-items: center;
+}
