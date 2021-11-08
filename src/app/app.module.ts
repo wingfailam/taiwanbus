@@ -11,6 +11,7 @@ import { CitiesComponent } from './cities/cities.component';
 import { BusComponent } from './cities/bus/bus.component';
 import { StopsComponent } from './cities/bus/stops/stops.component';
 import { EstimateComponent } from './cities/bus/stops/estimate/estimate.component';
+import { MapComponent } from './map/map.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { EstimateComponent } from './cities/bus/stops/estimate/estimate.componen
     CitiesComponent,
     BusComponent,
     StopsComponent,
-    EstimateComponent
+    EstimateComponent,
+    MapComponent
   ],
   imports: [
     BrowserModule,

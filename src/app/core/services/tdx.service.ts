@@ -34,6 +34,8 @@ export class TdxService {
   selectedBus: string = "TXG300";
   selectedBusName: string = "300";
   direction: string = "0";
+
+  location: any = [24.1369174, 120.6845513];
   // selectedBus: string = "TXG300";
   // selectedBusName: string = "300";
 
@@ -93,5 +95,10 @@ export class TdxService {
   getDepartureAndDestination(selectedCity: string, selectedBus: string, selectedBusName: string) {
     let stopsUrl = `https://ptx.transportdata.tw/MOTC/v2/Bus/Route/City/${selectedCity}/${selectedBusName}?$filter=RouteUID%20eq%20'${selectedBus}'&$format=JSON`;
     return this.http.get<any[]>(stopsUrl, this.httpOptions);
+  }
+  getShape() {
+    // selectedCity: string, selectedBus: string, selectedBusName: string, direction: string
+    let url = `https://ptx.transportdata.tw/MOTC/v2/Bus/Shape/City/${this.selectedCity}/${this.selectedBusName}?$filter=Direction%20eq%20${this.direction}%20and%20%20RouteUID%20eq%20'${this.selectedBus}'&$format=JSON`;
+    return this.http.get<any[]>(url, this.httpOptions);
   }
 }

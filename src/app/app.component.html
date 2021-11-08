@@ -1,7 +1,12 @@
 <div class="app-container">
-    <a (click)="refresh()" routerLink="/" class="nav">
-        <h2>台灣公車即時動態</h2><span><img src="assets/images/bus.png" alt="busIcon"> </span>
-    </a>
+    <div class="select-container">
+        <a (click)="refresh()" routerLink="/" class="nav">
+            <h2>台灣公車即時動態</h2><span><img src="assets/images/bus.png" alt="busIcon"> </span>
+        </a>
 
-    <app-cities></app-cities>
+        <app-cities></app-cities>
+    </div>
+    <div class="map-container">
+        <app-map></app-map>
+    </div>
 </div>
