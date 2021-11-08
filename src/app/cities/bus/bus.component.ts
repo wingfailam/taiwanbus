@@ -7,76 +7,143 @@ import { TdxService } from 'src/app/core/services/tdx.service';
 
 @Component({
   selector: 'app-bus',
-  providers: [TdxService],
+  providers: [],
   templateUrl: './bus.component.html',
   styleUrls: ['./bus.component.scss']
 })
-export class BusComponent implements OnInit, OnChanges {
+export class BusComponent implements OnInit {
 
-  @Input() selectedCity!: string;
+
 
   bus$!: Observable<any[]>;
   busArr!: any[];
 
-  selectedBus!: string;
-  selectedBusObj!: any;
-  selectedBusName!: string;
 
-  constructor(private tdxService: TdxService, private router: Router, private route: ActivatedRoute) { }
+  selectedBusObj!: any;
+
+
+  constructor(private tdxService: TdxService, private router: Router, private route: ActivatedRoute) {
+
+    this.route.queryParams.subscribe(params => {
+
+
+      // if (Object.keys(params).length === 0) {
+
+      // }
+      // if ('city' in params) {
+
+
+      // }
+      // if ('bus' in params && 'busName' in params) {
+      //   this.selectedBus = params['bus'];
+      //   this.selectedBusName = params['busName']
+      // }
+      this.getBus();
+
+
+    });
+
+  }
+
+  get selectedCity() {
+    return this.tdxService.selectedCity;
+  }
+
+  get selectedBus() {
+    return this.tdxService.selectedBus;
+  }
+
+
+  set selectedBus(val: string) {
+    this.tdxService.selectedBus = val;
+  }
+
+  get selectedBusName() {
+    return this.tdxService.selectedBusName;
+  }
+
+  set selectedBusName(val: string) {
+    this.tdxService.selectedBusName = val;
+  }
 
   selectedBusChange() {
-    this.getName();
+    console.log("會進來這邊嗎？");
 
 
+    if (this.selectedBus == null) {
+      console.log('this.selectedBus == null');
+      this.router.navigate(
+        [],
+        {
+          relativeTo: this.route,
+          queryParams: {
+            bus: null,
+            busName: null,
+          },
+          queryParamsHandling: 'merge',
+          replaceUrl: true
+        });
 
-    this.router.navigate(
-      [],
-      {
-        relativeTo: this.route,
-        queryParams: { bus: this.selectedBus },
-        queryParamsHandling: 'merge'
-      });
+    } else {
+      this.getName();
+      this.router.navigate(
+        [],
+        {
+          relativeTo: this.route,
+          queryParams: {
+            bus: this.selectedBus,
+            busName: this.selectedBusName
+          },
+          queryParamsHandling: 'merge',
+          replaceUrl: true
+        });
+    }
+
+
   }
   getName() {
     this.selectedBusObj = this.busArr.find(bus => bus.RouteUID === this.selectedBus);
-    this.selectedBusName = this.selectedBusObj['RouteName']['Zh_tw'];
+
+    if (this.selectedBusObj) {
+      this.selectedBusName = this.selectedBusObj['RouteName']['Zh_tw'];
+
+    }
   }
   getBus() {
+
+    // 防止數值在獲取、處理資料時更動造成錯誤
+    let selectedCity = this.selectedCity;
+    let selectedBus = this.selectedBus;
+    let selectedBusName = this.selectedBusName;
+
     this.bus$ = this.tdxService.getBus(this.selectedCity);
+
     this.bus$.subscribe(data => {
-      this.busArr = data
-      this.selectedBus = this.selectedBus || this.busArr[0]['RouteUID'];
+
+      this.busArr = data;
+      // 如果找不到 就給第一台
+      // 初始值一定找得到 不會進來
+      if (data.find(el => el.RouteUID === selectedBus) === undefined) {
+
+        this.selectedBus = this.busArr[0]['RouteUID'];
+
+        // 如果找不到指定公車，消除參數
+        this.router.navigate(
+          [],
+          {
+            relativeTo: this.route,
+            queryParams: { bus: null, busName: null },
+            queryParamsHandling: 'merge',
+            replaceUrl: true
+          });
+
+      }
       this.getName();
     });
   }
 
   ngOnInit(): void {
 
-    // this.bus$ = this.busService.getBus(this.selectedCity);
-    // this.bus$.subscribe(data => {
-    //   this.busArr = data
-    //   this.selectedBus = this.busArr[0]['RouteUID'];
-    // });
-    this.route.queryParams.subscribe(params => {
-      this.selectedBus = params['bus'];
-    });
-    this.getBus();
-
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    // this.bus$ = this.busService.getBus(this.selectedCity);
-    this.getBus();
-    // this.doSomething(changes.selectedCity.currentValue);
-    // You can also use categoryId.previousValue and 
-    // categoryId.firstChange for comparing old and new values
-    // this.router.navigate(
-    //   [],
-    //   {
-    //     relativeTo: this.activatedRoute,
-    //     queryParams: { city: this.selectedCity },
-    //     queryParamsHandling: 'merge'
-    //   });
-
-  }
 }

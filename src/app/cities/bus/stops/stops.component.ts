@@ -8,35 +8,57 @@ import { TdxService } from 'src/app/core/services/tdx.service';
 
 @Component({
   selector: 'app-stops',
-  providers: [TdxService],
+  providers: [],
   templateUrl: './stops.component.html',
   styleUrls: ['./stops.component.scss']
 })
 export class StopsComponent implements OnInit {
 
-  @Input() selectedBusName!: string;
-  @Input() selectedBus!: string;
-  @Input() selectedCity!: string;
-
-  direction: string = "0";
+  // direction: string = "0";
   stops: any[] = [];
   estimates: any[] = [];
-  // stopsLength: number = 0;
   departure!: string;
   destination!: string
-
-  constructor(private tdxService: TdxService, private route: ActivatedRoute, private router: Router) { }
-
-
-  ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
-      this.direction = params['direction'] || "0";
-    });
-    this.getAll();
+  get direction() {
+    return this.tdxService.direction
+  }
+  set direction(val: string) {
+    this.tdxService.direction = val;
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    this.getAll();
+  constructor(private tdxService: TdxService, private route: ActivatedRoute, private router: Router) {
+    this.route.queryParams.subscribe(params => {
+      if ('city' in params || ('bus' in params && 'busName' in params)) {
+        console.log("查詢", this.selectedCity, '之', this.selectedBus, '的公車');
+        console.log(this.selectedBusName);
+
+        // console.log("TTTTT test getStopsWithoutName")
+        // let test = this.tdxService.getStopsWithoutName(this.selectedCity, this.selectedBus, "0");
+        // console.log("TTTTT test getStopsWithoutName", test);
+      }
+      this.getAll();
+
+
+    });
+  }
+
+  get selectedCity() {
+    return this.tdxService.selectedCity;
+  }
+
+  get selectedBus() {
+    return this.tdxService.selectedBus;
+  }
+  get selectedBusName() {
+    return this.tdxService.selectedBusName;
+  }
+  ngOnInit(): void {
+
+    // this.route.queryParams.subscribe(params => {
+    //   this.direction = params['direction'] || "0";
+    // });
+    // this.getAll();
+
   }
 
   async getAll() {
@@ -46,7 +68,7 @@ export class StopsComponent implements OnInit {
     let departureAndDestination = <any>await this.getDepartureAndDestination()
     this.departure = departureAndDestination.DepartureStopNameZh;
     this.destination = departureAndDestination.DestinationStopNameZh;
-
+    console.log('estimates', this.estimates);
     this.stops = this.stops.map((stop) => {
       // stop.Estimates = stop["Estimates"] || "-";
 
@@ -83,7 +105,10 @@ export class StopsComponent implements OnInit {
     return new Promise(resolve => {
       this.tdxService.getStops(this.selectedCity, this.selectedBus, this.selectedBusName, this.direction).subscribe((data: any[]) => {
         // console.log(data);
-        resolve(data[0]["Stops"]);
+
+        if (data[0]) {
+          resolve(data[0]["Stops"]);
+        }
 
 
 

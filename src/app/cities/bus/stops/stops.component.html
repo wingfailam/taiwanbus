@@ -6,8 +6,8 @@
 <!-- <ng-select [items]="stop$ | async" bindLabel="RouteName.Zh_tw" autofocus bindValue="RouteUID" [(ngModel)]="selectedBusName">
 </ng-select> -->
 <div class="departureAndDestination">
-    <button (click)="changeDir('0')" [ngClass]="{'active': direction === '0'}">往 {{departure}}</button>
-    <button (click)="changeDir('1')" [ngClass]="{'active': direction === '1'}">往 {{destination}}</button>
+    <button (click)="changeDir('0')" [ngClass]="{'active': direction === '0'}">往 {{destination}}</button>
+    <button (click)="changeDir('1')" [ngClass]="{'active': direction === '1'}">往 {{departure}}</button>
 </div>
 
 <p>共 {{stops.length}} 站</p>
