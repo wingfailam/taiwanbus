@@ -82,7 +82,8 @@ export class StopsComponent implements OnInit {
         queryParams: { direction: dir },
         queryParamsHandling: 'merge'
       });
-    this.tdxService.getStopsAllData();
+    // this.tdxService.getStopsAllData();
+    this.tdxService.getAsyncData();
   }
 
 

@@ -47,7 +47,7 @@ export class TdxService {
 
   shape$!: Observable<any[]>;
   shape!: any;
-  time: number = 60000;
+  time: number = 30000;
 
   // selectedBus: string = "TXG300";
   // selectedBusName: string = "300";
@@ -65,7 +65,7 @@ export class TdxService {
 
 
       //先取得所有路線
-      // this.getRoutesData();
+      // this.getRoutesDataSelect();
 
       this.getAsyncData();
 
@@ -83,7 +83,9 @@ export class TdxService {
       console.log(this.time / 1000, '秒')
       if (this.time === 0) {
         this.time = 30000
-        this.getStopsAllData();
+        // 更新預估時間
+        this.getEstimatesDataFill();
+        // 更新公車位置
         this.setBusPositions()
       } else {
         this.time -= 1000
@@ -118,8 +120,7 @@ export class TdxService {
 
     }
   }
-
-  getRoutesData() {
+  getRoutesDataSelect() {
     return new Promise(resolve => {
       // 防止數值在獲取、處理資料時更動造成錯誤
       let selectedCity = this.selectedCity;
@@ -281,53 +282,42 @@ export class TdxService {
 
 
 
+  async setDepartureAndDestination() {
+    let departureAndDestination = <any>await this.getDepartureAndDestinationData()
+    this.departure = departureAndDestination.DepartureStopNameZh;
+    this.destination = departureAndDestination.DestinationStopNameZh;
+  }
 
-  getStopsAllData() {
-    return new Promise(async resolve => {
+  fillEstimates() {
+    this.stops = this.stops.map((stop) => {
+      // 清空上一筆資料
+      stop.Estimates = null;
+      stop.NextBusTime = null;
+      stop.Status = null;
 
-      this.stops = <any[]>await this.getStopsData();
-      this.estimates = <any[]>await this.getEstimatesData();
-      console.log(this.estimates);
-      let departureAndDestination = <any>await this.getDepartureAndDestinationData()
-      this.departure = departureAndDestination.DepartureStopNameZh;
-      this.destination = departureAndDestination.DestinationStopNameZh;
-      console.log('estimates', this.estimates);
-      this.stops = this.stops.map((stop) => {
-        // stop.Estimates = stop["Estimates"] || "-";
+      this.estimates.map((estimate) => {
+        if (stop.StopUID === estimate.StopUID) {
 
-        this.estimates.map((estimate) => {
-
-          if (stop.StopUID === estimate.StopUID) {
-            // stop.Estimates = estimate.Estimates[0].EstimateTime;
-            // console.log('estimate data', estimate.EstimateTime)
-            if (estimate.EstimateTime) {
-              if (estimate.EstimateTime / 60 <= 1) {
-                stop.Estimates = "進站中";
-                stop.color = '#ac4142';
-              } else if (estimate.EstimateTime / 60 <= 3) {
-                stop.Estimates = "即將到站";
-                stop.color = '#6c99bb';
-              } else {
-                stop.Estimates = Math.floor(estimate.EstimateTime / 60) + ' 分';
-                stop.color = '#808080';
-              }
-            } else if (estimate.NextBusTime) {
-              stop.NextBusTime = estimate.NextBusTime;
+          if (estimate.EstimateTime) {
+            if (estimate.EstimateTime / 60 <= 1) {
+              stop.Estimates = "進站中";
+              stop.color = '#ac4142';
+            } else if (estimate.EstimateTime / 60 <= 3) {
+              stop.Estimates = "即將到站";
+              stop.color = '#6c99bb';
             } else {
-              stop.Status = "-";
+              stop.Estimates = Math.floor(estimate.EstimateTime / 60) + ' 分';
+              stop.color = '#808080';
             }
+          } else if (estimate.NextBusTime) {
+            stop.NextBusTime = estimate.NextBusTime;
+          } else {
+            stop.Status = "-";
           }
-
-        });
-        return stop;
-      })
-      resolve(true);
-
-      // this.setStopsMarkers();
-      // this.setBusMarker();
-
+        }
+      });
+      return stop;
     })
-
   }
 
 
@@ -337,7 +327,9 @@ export class TdxService {
         // console.log(data);
 
         if (data[0]) {
-          resolve(data[0]["Stops"]);
+          this.stops = data[0]["Stops"]
+          resolve(true);
+
         }
 
 
@@ -347,12 +339,13 @@ export class TdxService {
 
   }
 
-  getEstimatesData() {
-    return new Promise(resolve => {
-      this.getEstimates(this.selectedCity, this.selectedBus, this.selectedBusName, this.direction).subscribe((data: any[]) => {
-        resolve(data);
-      })
+  getEstimatesDataFill() {
+
+    this.getEstimates(this.selectedCity, this.selectedBus, this.selectedBusName, this.direction).subscribe((data: any[]) => {
+      this.estimates = data;
+      this.fillEstimates();
     })
+
   }
 
   getDepartureAndDestinationData() {
@@ -409,14 +402,25 @@ export class TdxService {
   // 需要先決定公車路線才能呈現該資料
   async getAsyncData() {
     // 取得完所有路線後才能選擇路線並給予該路線的資訊
-    await this.getRoutesData();
+    // 已知路線
+    await this.getRoutesDataSelect();
     // 取得該路線的路線圖
     this.getShapeData();
+    // 取得起迄站名稱
+    this.setDepartureAndDestination();
+    //取得預估時間
+    this.getEstimatesDataFill();
+    //取得並設置公車位置
+    this.setBusPositions();
 
+    // 取得站點位置
+    await this.getStopsData()
+    //  取得並填入預估時間
+    this.getEstimatesDataFill()
 
     // 取得該路線的所有站點位置
-    await this.getStopsAllData();
-    this.setBusPositions();
+
+    // 設置站點位置
     this.setStopsMarkers();
 
     // this.setBusMarker();
