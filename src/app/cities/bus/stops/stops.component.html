@@ -10,10 +10,14 @@
     <button (click)="changeDir('1')" [ngClass]="{'active': direction === '1'}">往 {{departure}}</button>
 </div>
 
-<p>共 {{stops.length}} 站</p>
+<li #info><span>共 {{stops.length}} 站</span><span id="space"></span><span id="time">{{time/1000}} 秒後更新</span>
+</li>
 <li *ngFor="let stop of stops; index as i; ">
-    {{stop["StopName"]["Zh_tw"]}}
-    <span [style.background-color]="stop.color">
+    <span>
+        <span id="order"> {{stop["StopSequence"]}}</span>
+        {{stop["StopName"]["Zh_tw"]}}
+    </span>
+    <span id="status" [style.background-color]="stop.color">
         {{stop["Status"]}}
         {{stop["Estimates"]}}
         {{stop["NextBusTime"] | date:'H:mm'}}

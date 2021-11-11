@@ -1,3 +1,16 @@
+.markers {
+    width: 24px !important;
+    height: 24px !important;
+    margin-left: -12px;
+    margin-top: -12px;
+    border-radius: 18px;
+    border: 2px solid #3f51b5;
+    text-align: center;
+    color: #3f51b5;
+    background-color: #fff;
+    font-size: 16px;
+}
+
 .map-container {
     width: 100%;
     height: 100%;

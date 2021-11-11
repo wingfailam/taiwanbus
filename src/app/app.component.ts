@@ -9,6 +9,7 @@ import { TdxService } from './core/services/tdx.service';
 })
 export class AppComponent implements OnInit {
   title = '台灣公車即時動態';
+  change = false;
   public constructor(private titleService: Title, private tdxService: TdxService) { }
   ngOnInit(): void {
     this.titleService.setTitle(this.title);
@@ -20,6 +21,9 @@ export class AppComponent implements OnInit {
     this.tdxService.selectedBus = "TXG300";
     this.tdxService.selectedBusName = "300";
     this.tdxService.direction = "0";
+  }
+  handleChange() {
+    this.change = !this.change;
   }
 
 }

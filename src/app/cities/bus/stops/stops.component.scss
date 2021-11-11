@@ -4,13 +4,33 @@ li {
     margin: 10px;
     height: 30px;
     align-items: center;
+    position: relative;
 }
-span {
+#info {
+}
+#space {
+    flex-grow: 5;
+    display: block;
+    border-bottom: 1px #808080;
+}
+
+#time {
+    // position: absolute;
+    // left: 70px;
+    // bottom: 5px;
+    font-size: 10px;
+}
+#order {
+    display: inline-flex;
+    width: 20px;
+    justify-content: center;
+}
+#status {
     display: flex;
     align-items: center;
     justify-content: center;
     height: 100%;
-    width: 80px;
+    width: 85px;
     background-color: #808080;
     color: #fff;
     border-radius: 14px;
@@ -23,7 +43,7 @@ button {
     align-items: center;
     justify-content: center;
     height: 60px;
-    width: 100%;
+    width: 45%;
     min-width: 150px;
     // text-decoration: none;
     border: none;
@@ -31,7 +51,7 @@ button {
     color: #fff;
     border-radius: 25px;
     font-size: 1.17em;
-    margin-right: 30px;
+
     &.active {
         background-color: #e5b567;
     }
@@ -62,4 +82,5 @@ button {
 
 .departureAndDestination {
     display: flex;
+    justify-content: space-evenly;
 }
