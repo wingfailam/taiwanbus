@@ -58,6 +58,22 @@
     z-index: 10000;
     border: 1px;
     box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .change-img {
+        width: 50%;
+        height: 50%;
+        display: inline-block;
+
+        background-image: url(/assets/images/change.png);
+        background-position: center;
+        // background-size: cover;
+        background-size: contain;
+        background-repeat: no-repeat;
+    }
     &:hover {
         background-color: #e0e0e0;
     }
@@ -75,6 +91,7 @@ img {
 }
 h2 {
     display: inline;
+    // margin-bottom: 10px;
 }
 .nav {
     position: relative;

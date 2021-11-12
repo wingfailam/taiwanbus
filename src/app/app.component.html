@@ -9,5 +9,7 @@
     <div class="map-container" [ngClass]="!change ? 'inactive' : ''  ">
         <app-map></app-map>
     </div>
-    <button class="change" (click)="handleChange()">切換</button>
+    <button class="change" (click)="handleChange()">
+        <span class="change-img"></span>
+    </button>
 </div>

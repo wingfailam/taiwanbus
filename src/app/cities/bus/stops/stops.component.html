@@ -10,7 +10,7 @@
     <button (click)="changeDir('1')" [ngClass]="{'active': direction === '1'}">往 {{departure}}</button>
 </div>
 
-<li #info>
+<li id="info" (click)="update()">
     <span>共 {{stops.length}} 站</span><span id="space"></span><span id="time">{{time/1000}} 秒後更新</span>
 
 </li>

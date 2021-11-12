@@ -86,15 +86,7 @@ export class TdxService {
     interval(1000).subscribe(val => {
       // console.log(this.time / 1000, '秒')
       if (this.time === 0) {
-        this.time = 30000
-        // 更新預估時間
-        this.getEstimatesDataFill();
-        // 更新公車位置
-        this.setBusPositions()
-        // 更新選取站點預估時間
-        if (this.markerOnClickEvent) {
-          this.markerOnClick(this.markerOnClickEvent, this.selectedStopUID);
-        }
+        this.update();
 
       } else {
         this.time -= 1000
@@ -102,6 +94,17 @@ export class TdxService {
 
     })
 
+  }
+  update() {
+    this.time = 30000
+    // 更新預估時間
+    this.getEstimatesDataFill();
+    // 更新公車位置
+    this.setBusPositions()
+    // 更新選取站點預估時間
+    if (this.markerOnClickEvent) {
+      this.markerOnClick(this.markerOnClickEvent, this.selectedStopUID);
+    }
   }
 
   getCities(): Observable<any[]> {
@@ -492,6 +495,7 @@ export class TdxService {
     html += `</div>`;
 
     popup.setContent(html);
+    e.target.openPopup();
     console.log(e.target);
 
     return true;

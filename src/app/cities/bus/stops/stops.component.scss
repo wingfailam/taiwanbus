@@ -16,6 +16,12 @@ li {
     }
 }
 #info {
+    padding: 5px;
+    height: 23px;
+    &:hover {
+        // background-color: #a8e4df;
+        background-color: #bee2df;
+    }
 }
 #space {
     flex-grow: 5;
@@ -63,6 +69,8 @@ button {
 
     &.active {
         background-color: #e5b567;
+        // background-color: #cc7833;
+        // color: #707070;
     }
     // &::before {
     //     content: "";
@@ -92,4 +100,6 @@ button {
 .departureAndDestination {
     display: flex;
     justify-content: space-evenly;
+    margin: 20px 0px;
+    margin-bottom: 15px;
 }

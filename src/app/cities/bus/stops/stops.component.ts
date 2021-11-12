@@ -90,7 +90,9 @@ export class StopsComponent implements OnInit {
   liOnClick(stop: string) {
     this.tdxService.liOnClick(stop);
   }
-
+  update() {
+    this.tdxService.update();
+  }
 
 
 
