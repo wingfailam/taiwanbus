@@ -3,6 +3,7 @@
 * {
     color: #505050;
     text-decoration: none;
+    font-family: "Helvetica", "Arial", "LiHei Pro", "黑體-繁", "微軟正黑體", sans-serif;
 }
 html,
 body {
@@ -14,10 +15,14 @@ body {
 }
 
 .markers {
-    width: 24px !important;
-    height: 24px !important;
+    // display: flex !important;
+    // justify-content: center;
+    line-height: 27px;
+    width: 27px !important;
+    height: 27px !important;
     margin-left: -12px;
     margin-top: -12px;
+    // margin: 10px;
     border-radius: 18px;
     border: 2px solid #fff;
     text-align: center;
@@ -41,4 +46,49 @@ body {
         width: 0;
         height: 0;
     }
+}
+.stopDetail {
+    // height: 300px;
+
+    // display: flex;
+    justify-content: space-between;
+    border-radius: 12px;
+    h3 {
+        margin-top: 10px;
+    }
+    span {
+        font-size: 15px;
+        // font-weight: bold;
+    }
+    h4 {
+        display: inline-block;
+        margin: 5px;
+        font-size: 15px;
+    }
+    .leaflet-popup-content {
+        .routes-list {
+            height: 250px;
+            width: 200px;
+            overflow-y: scroll;
+            li {
+                // height: 25px;
+                // border: #808080 1px solid;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                border-bottom: solid 1px #d0d0d0;
+            }
+        }
+    }
+}
+
+#status {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 85px;
+    background-color: #808080;
+    color: #fff;
+    border-radius: 14px;
 }

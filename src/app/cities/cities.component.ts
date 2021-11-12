@@ -14,7 +14,8 @@ export class CitiesComponent implements OnInit {
 
 
   cities$!: Observable<any[]>;
-  // selectedCity!: string;
+
+
 
   get selectedCity() {
     return this.tdxService.selectedCity;

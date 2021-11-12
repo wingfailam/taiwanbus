@@ -14,6 +14,7 @@ import { TdxService } from 'src/app/core/services/tdx.service';
 })
 export class StopsComponent implements OnInit {
 
+
   // direction: string = "0";
   get time() {
     return this.tdxService.time;
@@ -70,6 +71,7 @@ export class StopsComponent implements OnInit {
     // });
     // this.getAll();
 
+    // this.liOnClick("liOnClick");
   }
 
   changeDir(dir: string) {
@@ -85,6 +87,10 @@ export class StopsComponent implements OnInit {
     // this.tdxService.getStopsAllData();
     this.tdxService.getAsyncData();
   }
+  liOnClick(stop: string) {
+    this.tdxService.liOnClick(stop);
+  }
+
 
 
 

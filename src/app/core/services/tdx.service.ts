@@ -8,6 +8,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import * as L from 'leaflet';
 import * as geojson from 'geojson';
+import { async } from '@angular/core/testing';
+import { makeBindingParser } from '@angular/compiler';
 
 @Injectable({
   providedIn: 'root'
@@ -37,7 +39,9 @@ export class TdxService {
   selectedBus: string = "TXG300";
   selectedBusName: string = "300";
   direction: string = "0";
-
+  selectedStopUID: string = 'TXG13567';
+  stopDetail: any[] = [];
+  markerOnClickEvent: any;
   map: any;
   location: any = [24.1369174, 120.6845513];
   lineLayer: any;
@@ -47,7 +51,7 @@ export class TdxService {
 
   shape$!: Observable<any[]>;
   shape!: any;
-  time: number = 30000;
+  public time: number = 30000;
 
   // selectedBus: string = "TXG300";
   // selectedBusName: string = "300";
@@ -80,16 +84,20 @@ export class TdxService {
 
     });
     interval(1000).subscribe(val => {
-      console.log(this.time / 1000, '秒')
+      // console.log(this.time / 1000, '秒')
       if (this.time === 0) {
         this.time = 30000
         // 更新預估時間
         this.getEstimatesDataFill();
         // 更新公車位置
         this.setBusPositions()
+        // 更新選取站點預估時間
+        if (this.markerOnClickEvent) {
+          this.markerOnClick(this.markerOnClickEvent, this.selectedStopUID);
+        }
+
       } else {
         this.time -= 1000
-
       }
 
     })
@@ -163,11 +171,8 @@ export class TdxService {
     return this.http.get<any[]>(stopsUrl, this.httpOptions);
   }
 
-  getEstimates(selectedCity: string, selectedBus: string, selectedBusName: string, direction: string) {
-    let stopsUrl = `https://ptx.transportdata.tw/MOTC/v2/Bus/EstimatedTimeOfArrival/City/${selectedCity}/${selectedBusName}?$filter=Direction%20eq%20${direction}%20and%20RouteUID%20eq%20'${selectedBus}'&$format=JSON`;
-    console.log(stopsUrl);
-    return this.http.get<any[]>(stopsUrl, this.httpOptions);
-  }
+
+
 
   getDepartureAndDestination(selectedCity: string, selectedBus: string, selectedBusName: string) {
     let stopsUrl = `https://ptx.transportdata.tw/MOTC/v2/Bus/Route/City/${selectedCity}/${selectedBusName}?$filter=RouteUID%20eq%20'${selectedBus}'&$format=JSON`;
@@ -287,6 +292,55 @@ export class TdxService {
     this.departure = departureAndDestination.DepartureStopNameZh;
     this.destination = departureAndDestination.DestinationStopNameZh;
   }
+  getEstimates(selectedCity: string, selectedBus: string, selectedBusName: string, direction: string) {
+    let stopsUrl = `https://ptx.transportdata.tw/MOTC/v2/Bus/EstimatedTimeOfArrival/City/${selectedCity}/${selectedBusName}?$filter=Direction%20eq%20${direction}%20and%20RouteUID%20eq%20'${selectedBus}'&$format=JSON`;
+    return this.http.get<any[]>(stopsUrl, this.httpOptions);
+  }
+
+  getEstimatesByStop() {
+    // let stopsUrl = `https://ptx.transportdata.tw/MOTC/v2/Bus/EstimatedTimeOfArrival/City/${this.selectedCity}/${selectedBusName}?$filter=Direction%20eq%20${direction}%20and%20RouteUID%20eq%20'${selectedBus}'&$format=JSON`;
+    // let url = `https://ptx.transportdata.tw/MOTC/v2/Bus/EstimatedTimeOfArrival/${this.selectedCity}/Taichung?$select=StopName%2C%20RouteName%2C%20EstimateTime%2C%20NextBusTime&$filter=StopUID%20eq%20'${this.selectedStopUID}'&$format=JSON`;
+    let url = `https://ptx.transportdata.tw/MOTC/v2/Bus/EstimatedTimeOfArrival/City/${this.selectedCity}?$select=StopName%2C%20RouteName%2C%20DestinationStop%2C%20EstimateTime%2C%20NextBusTime&$filter=StopUID%20eq%20%27${this.selectedStopUID}%27&$format=JSON`;
+    console.log(url);
+    return this.http.get<any[]>(url, this.httpOptions);
+  }
+
+  getEstimatesByStopData() {
+    return new Promise(resolve => {
+      this.getEstimatesByStop().subscribe(data => {
+        data = data.sort(function (a, b) {
+          if (a.EstimateTime && b.EstimateTime) {
+            return 0;
+          } else if (a.EstimateTime) {
+            return -1;
+          } else {
+            return 1;
+          }
+        })
+        data = data.sort(function (a, b) {
+          if (a.EstimateTime && b.EstimateTime) {
+            return a.EstimateTime - b.EstimateTime;
+          } else if (a.EstimateTime || b.EstimateTime) {
+            return a.EstimateTime ? -1 : 1;
+          } else {
+            if (a.NextBusTime && b.NextBusTime) {
+              return <any>new Date(a.NextBusTime) - <any>new Date(b.NextBusTime);
+            } else if (a.NextBusTime || b.NextBusTime) {
+              return a.NextBusTime ? -1 : 1
+            } else {
+              return 1;
+            }
+
+          }
+          // return <any>new Date(b.NextBusTime) - <any>new Date(a.NextBusTime);
+        })
+        this.stopDetail = data;
+        console.log(this.stopDetail);
+        resolve(this.stopDetail);
+      })
+    })
+
+  }
 
   fillEstimates() {
     this.stops = this.stops.map((stop) => {
@@ -314,6 +368,7 @@ export class TdxService {
           } else {
             stop.Status = "-";
           }
+
         }
       });
       return stop;
@@ -321,6 +376,16 @@ export class TdxService {
   }
 
 
+
+
+  getEstimatesDataFill() {
+
+    this.getEstimates(this.selectedCity, this.selectedBus, this.selectedBusName, this.direction).subscribe((data: any[]) => {
+      this.estimates = data;
+      this.fillEstimates();
+    })
+
+  }
   getStopsData() {
     return new Promise(resolve => {
       this.getStops(this.selectedCity, this.selectedBus, this.selectedBusName, this.direction).subscribe((data: any[]) => {
@@ -335,15 +400,6 @@ export class TdxService {
 
 
       });
-    })
-
-  }
-
-  getEstimatesDataFill() {
-
-    this.getEstimates(this.selectedCity, this.selectedBus, this.selectedBusName, this.direction).subscribe((data: any[]) => {
-      this.estimates = data;
-      this.fillEstimates();
     })
 
   }
@@ -372,7 +428,8 @@ export class TdxService {
           className: 'markers',
           html: el.StopSequence
         })
-      });
+      }).bindPopup('', { className: "stopDetail", closeButton: false }).on(<any>'click', e => this.markerOnClick(e, el.StopUID));
+      el.Marker = marker;
       layerGroup.push(marker);
 
     });
@@ -380,8 +437,155 @@ export class TdxService {
     console.log('layerGroup', layerGroup)
     this.stopsMarkersLayer = L.layerGroup(layerGroup);
     this.stopsMarkersLayer.addTo(this.map);
+    console.log(this.stopsMarkersLayer);
 
   }
+
+  async markerOnClick(e: any, stopUID: string): Promise<any> {
+    // console.log(e);
+    // console.log(stopUID);
+    this.markerOnClickEvent = e;
+    console.log("e", e);
+    let popup = e.target.getPopup();
+    this.selectedStopUID = stopUID;
+    await this.getEstimatesByStopData();
+    let stopDetail = this.stopDetail;
+    // console.log(popup)
+    console.log('stopDetail', stopDetail);
+    let html = `
+      <h3>${stopDetail[0].StopName.Zh_tw}</h3>
+      <div class="routes-list">
+    `;
+
+    stopDetail.forEach(el => {
+      let route: any = {};
+      if (el.EstimateTime) {
+        if (el.EstimateTime / 60 <= 1) {
+          route.Status = "進站中";
+          route.color = '#ac4142';
+        } else if (el.EstimateTime / 60 <= 3) {
+          route.Status = "即將到站";
+          route.color = '#6c99bb';
+        } else {
+          route.Status = Math.floor(el.EstimateTime / 60) + ' 分';
+          route.color = '#808080';
+        }
+      } else if (el.NextBusTime) {
+        route.Status = new Date(el.NextBusTime).getHours().toString().padStart(2, "0") + ':' + new Date(el.NextBusTime).getMinutes().toString().padStart(2, "0");
+
+      } else {
+        route.Status = "-";
+      }
+      // console.log(route)
+      let temp = `
+      <li>
+
+        <h4>${el.RouteName.Zh_tw}</h4>
+
+        <span id="status" style="background-color: ${route.color}">${route.Status}</span> 
+
+      </li>
+      `;
+      html += temp;
+
+    })
+    html += `</div>`;
+
+    popup.setContent(html);
+    console.log(e.target);
+
+    return true;
+  }
+
+
+
+
+
+  async test(stop: any): Promise<any> {
+    await this.getEstimatesByStopData();
+  }
+  testClick() {
+    console.log(this.time);
+    // this.test('TXG13567');
+
+  }
+
+
+
+  // }
+  async liOnClick(stop: any): Promise<any> {
+    this.handleChange();
+    console.log(stop);
+    // stop.Marker.openPopup();
+    let latlng = [stop.Marker._latlng.lat + 0.025, stop.Marker._latlng.lng]
+    this.map.flyTo(latlng, 12);
+
+    this.markerOnClick({ target: stop.Marker }, stop.StopUID);
+
+    stop.Marker.openPopup();
+
+
+    // this.selectedStopUID = stop.StopUID;
+    // console.log(this.selectedStopUID);
+    // await this.getEstimatesByStopData();
+    // let stopDetail = this.stopDetail;
+    // // console.log(popup)
+    // console.log('stopDetail', stopDetail);
+    // let html = `
+    //       <h3>${stopDetail[0].StopName.Zh_tw}</h3>
+    //       <div class="routes-list">
+    //     `;
+
+    // stopDetail.forEach(el => {
+    //   let route: any = {};
+    //   if (el.EstimateTime) {
+    //     if (el.EstimateTime / 60 <= 1) {
+    //       route.Status = "進站中";
+    //       route.color = '#ac4142';
+    //     } else if (el.EstimateTime / 60 <= 3) {
+    //       route.Status = "即將到站";
+    //       route.color = '#6c99bb';
+    //     } else {
+    //       route.Status = Math.floor(el.EstimateTime / 60) + ' 分';
+    //       route.color = '#808080';
+    //     }
+    //   } else if (el.NextBusTime) {
+    //     route.Status = new Date(el.NextBusTime).getHours().toString().padStart(2, "0") + ':' + new Date(el.NextBusTime).getMinutes().toString().padStart(2, "0");
+
+    //   } else {
+    //     route.Status = "-";
+    //   }
+    //   // console.log(route)
+    //   let temp = `
+    //       <li>
+
+    //         <h4>${el.RouteName.Zh_tw}</h4>
+
+    //         <span id="status" style="background-color: ${route.color}">${route.Status}</span> 
+
+    //       </li>
+    //       `;
+    //   html += temp;
+
+    // })
+    // html += `</div>`;
+
+
+    // let marker = L.marker([stop.StopPosition.PositionLat, stop.StopPosition.PositionLon], {
+    //   icon: L.divIcon({
+    //     className: 'markers',
+    //     html: stop.StopSequence
+    //   })
+    // }).bindPopup(html, { className: "stopDetail", closeButton: false }).on(<any>'click', e => this.markerOnClick(e, stop.StopUID)).openPopup();
+    // console.log(marker)
+    // marker.addTo(this.map);
+    // // popup.setContent(html);
+    // return true;
+
+
+  }
+
+
 
 
   setBusMarker() {
@@ -409,7 +613,7 @@ export class TdxService {
     // 取得起迄站名稱
     this.setDepartureAndDestination();
     //取得預估時間
-    this.getEstimatesDataFill();
+    // this.getEstimatesDataFill();
     //取得並設置公車位置
     this.setBusPositions();
 
@@ -424,6 +628,13 @@ export class TdxService {
     this.setStopsMarkers();
 
     // this.setBusMarker();
+    this.getEstimatesByStopData();
+  }
+
+  change = false;
+  handleChange() {
+    console.log('change');
+    this.change = !this.change;
   }
 
 }
