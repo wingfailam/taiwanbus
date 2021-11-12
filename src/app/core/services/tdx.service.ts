@@ -447,6 +447,7 @@ export class TdxService {
   async markerOnClick(e: any, stopUID: string): Promise<any> {
     // console.log(e);
     // console.log(stopUID);
+    e.target.closePopup();
     this.markerOnClickEvent = e;
     console.log("e", e);
     let popup = e.target.getPopup();
