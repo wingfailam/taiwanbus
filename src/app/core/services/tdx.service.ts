@@ -448,6 +448,7 @@ export class TdxService {
     // console.log(e);
     // console.log(stopUID);
     e.target.closePopup();
+
     this.markerOnClickEvent = e;
     console.log("e", e);
     let popup = e.target.getPopup();
