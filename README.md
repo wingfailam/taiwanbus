@@ -1,27 +1,18 @@
-# BusAngularApi
+# Bus
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.2.12.
 
-## Development server
+## 功能
+* 任選縣市、公車路線、往返方向以取得所選站點資訊及預估到站時間
+* 地圖呈現公車路線、其站序、與行駛中的公車位置
+* 點擊地圖上的站點將顯示該站點各路線之預估到站時間（依時間排序）
+* 點擊地圖上的公車將顯示車牌號碼
+* 以三十秒為期自動更新，亦可手動更新
+* 支援RWD
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+## 參考來源
+* [台中公車即時動態](https://citybus.taichung.gov.tw/ebus/driving-map)
+* [高雄公車即時動態](https://ibus.tbkc.gov.tw/ibus/driving-map/1431)
 
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+## 所用資源
+* [切換 icon](https://www.flaticon.com/premium-icon/change_2990017?term=change&page=1&position=21&page=1&position=21&related_id=2990017&origin=search)
