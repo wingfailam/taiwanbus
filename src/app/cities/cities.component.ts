@@ -57,8 +57,14 @@ export class CitiesComponent implements OnInit {
           bus: null,
           busName: null
         },
-        queryParamsHandling: 'merge',
-        // skipLocationChange: true
+
+        // 預設即為 merge ， preserve 將不會改變網址、也不會傳遞參數
+        // queryParamsHandling: 'merge',
+        
+        // 預設即為 false ， true 將會傳遞參數、但不會更改網址
+        // skipLocationChange: false,
+        
+        // true 瀏覽器將不會有歷史記錄，預設為 false
         replaceUrl: true
       });
   }

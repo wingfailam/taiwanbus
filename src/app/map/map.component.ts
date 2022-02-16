@@ -34,6 +34,9 @@ export class MapComponent implements AfterViewInit {
 
     let url = "https://api.mapbox.com/styles/v1/pandaoao/ckuib6yuz54fd17qm2bkxqeqt/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoicGFuZGFvYW8iLCJhIjoiY2t1aWI0dGgwMm1oejMycTZ2YWt5dWw3OSJ9.zMxDIA087Tqzl8DdTIr0Gg"
 
+    // url="	https://tile.openstreetmap.org/${z}/${x}/${y}.png";
+
+    url = url.replace(/\$/g ,"");
     const tiles = L.tileLayer(url, {
       // maxZoom: 18,
       // minZoom: 3,
