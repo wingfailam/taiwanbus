@@ -32,6 +32,19 @@ export class MapComponent implements AfterViewInit {
       // zoom: 12
     });
 
+    this.map.locate().on('locationfound', (e:any)=>{
+      const circle = L.circle([e.latitude, e.longitude],{radius: 100,color:'#7e8e50'});
+      const width = document.body.clientWidth;
+      this.map.addLayer(circle);
+      if(width<768){
+        
+        this.map.setView([e.latitude, e.longitude],14);
+
+
+      }
+    });
+  
+
     let url = "https://api.mapbox.com/styles/v1/pandaoao/ckuib6yuz54fd17qm2bkxqeqt/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoicGFuZGFvYW8iLCJhIjoiY2t1aWI0dGgwMm1oejMycTZ2YWt5dWw3OSJ9.zMxDIA087Tqzl8DdTIr0Gg"
 
     // url="	https://tile.openstreetmap.org/${z}/${x}/${y}.png";

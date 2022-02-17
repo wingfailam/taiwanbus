@@ -68,6 +68,7 @@ export class CitiesComponent implements OnInit {
         replaceUrl: true
       });
   }
+  
 
 
 }
