@@ -12,6 +12,11 @@ import { BusComponent } from './cities/bus/bus.component';
 import { StopsComponent } from './cities/bus/stops/stops.component';
 import { EstimateComponent } from './cities/bus/stops/estimate/estimate.component';
 import { MapComponent } from './map/map.component';
+import { MainSelectComponent } from './main-select/main-select.component';
+
+
+
+
 
 @NgModule({
   declarations: [
@@ -20,7 +25,11 @@ import { MapComponent } from './map/map.component';
     BusComponent,
     StopsComponent,
     EstimateComponent,
-    MapComponent
+    MapComponent,
+    MainSelectComponent,
+
+
+
   ],
   imports: [
     BrowserModule,

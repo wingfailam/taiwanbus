@@ -13,10 +13,7 @@ import { TdxService } from 'src/app/core/services/tdx.service';
 })
 export class BusComponent implements OnInit {
 
-
-
-
-
+  busArr:any = [];
 
   constructor(private tdxService: TdxService, private router: Router, private route: ActivatedRoute) {
 
@@ -39,6 +36,15 @@ export class BusComponent implements OnInit {
 
     });
 
+    this.bus$.subscribe((busArr)=>{
+      this.busArr = busArr;
+      console.log('busArr',busArr)
+    })
+
+  }
+
+  get width() {
+    return this.tdxService.width;
   }
 
   get bus$() {

@@ -1,4 +1,4 @@
-.city {
+.select-container {
     position: relative;
 }
 input {
@@ -7,12 +7,15 @@ input {
     cursor: pointer;
     width: 100%;
     box-sizing: border-box;
-    height: 36px;
+    // height: 36px;
+    // font-size: 16px;
+    height: 40px;
+    font-size: 17px;
     outline: none;
     border: 2px solid #ccc;
     border-radius: 10px;
     padding: 10px;
-    font-size: 16px;
+
     &:focus {
         border: 2px solid #ccc;
         outline: none;
@@ -23,10 +26,10 @@ input {
         opacity: 1;
     }
 }
-.city-container {
+.main-container {
     position: relative;
 }
-.city-selector {
+.main-selector {
     position: absolute;
     width: 100%;
     max-height: 200px;
@@ -48,8 +51,12 @@ input {
         &:hover {
             background-color: #a6cde0;
         }
+        &.disable {
+            color: #ccc;
+            &:hover {
+                cursor: unset;
+                background-color: #fff;
+            }
+        }
     }
-}
-.disable {
-    color: #ccc;
 }

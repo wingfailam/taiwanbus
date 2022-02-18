@@ -32,7 +32,6 @@ export class TdxService {
   // httpOptions = {
   //   headers: new HttpHeaders({
   //     ...this.getAuthorizationHeader()
-  //   })
   // };
 
   getHttpOptions() {
@@ -43,6 +42,7 @@ export class TdxService {
     };
   }
 
+  width: number = 0;
   selectedCity: string = "Taichung";
   selectedBus: string = "TXG300";
   selectedBusName: string = "300";
@@ -67,6 +67,13 @@ export class TdxService {
   // selectedChange: Subject<any> = new Subject<any>();
 
   constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router) {
+
+    // 取得視窗寬度
+    this.width = document.body.clientWidth;
+    // 監聽視窗寬度
+    window.onresize = (event:any) => {
+      this.width = document.body.clientWidth;
+    }
 
     this.route.queryParams.subscribe(params => {
 

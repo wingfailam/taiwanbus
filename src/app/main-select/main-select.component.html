@@ -1,0 +1,11 @@
+<div class="select-container">
+    <input [placeholder]="selectedLabel" [(ngModel)]="qureyString" (focus)="isDropdown = true"
+        (focusout)="handleFocusOut()">
+    <div *ngIf="isDropdown" class="main-selector">
+        <div *ngFor="let item of filteredItems" (click)="handleClick(item[bindValue])">
+            <!-- {{item[bindLabel]}} -->
+            {{deepValue(item,bindLabel)}}
+        </div>
+        <div *ngIf="filteredItems.length < 1" class="disable">{{msg}}</div>
+    </div>
+</div>

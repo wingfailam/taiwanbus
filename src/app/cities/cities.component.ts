@@ -14,6 +14,16 @@ export class CitiesComponent implements OnInit {
 
 
   cities$!: Observable<any[]>;
+  cities:any[];
+
+
+
+
+
+  get width(){
+    return this.tdxService.width;
+  }
+
 
 
 
@@ -37,7 +47,16 @@ export class CitiesComponent implements OnInit {
     // });
 
 
+
+
     this.cities$ = this.tdxService.getCities();
+    this.cities=[];
+
+
+
+
+
+
   }
 
   ngOnInit(): void {
@@ -47,6 +66,7 @@ export class CitiesComponent implements OnInit {
 
   }
   changeCity() {
+    console.log('change')
     // this.tdxService.selectedChange.next({ "selectedCity": this.selectedCity })
     this.router.navigate(
       [],
@@ -68,6 +88,9 @@ export class CitiesComponent implements OnInit {
         replaceUrl: true
       });
   }
+
+
+
   
 
 
