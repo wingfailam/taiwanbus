@@ -10,6 +10,13 @@ import { TdxService } from '../core/services/tdx.service';
   styleUrls: ['./map.component.scss']
 })
 export class MapComponent implements AfterViewInit {
+
+  get width(){
+    return this.tdxService.width;
+  }
+  get url(){
+    return this.tdxService.url;
+  }
   get map() {
     return this.tdxService.map;
   }
@@ -45,18 +52,26 @@ export class MapComponent implements AfterViewInit {
     });
   
 
-    let url = "https://api.mapbox.com/styles/v1/pandaoao/ckuib6yuz54fd17qm2bkxqeqt/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoicGFuZGFvYW8iLCJhIjoiY2t1aWI0dGgwMm1oejMycTZ2YWt5dWw3OSJ9.zMxDIA087Tqzl8DdTIr0Gg"
+
 
     // url="	https://tile.openstreetmap.org/${z}/${x}/${y}.png";
 
-    url = url.replace(/\$/g ,"");
-    const tiles = L.tileLayer(url, {
-      // maxZoom: 18,
-      // minZoom: 3,
-      attribution: '&copy; 公車地圖 by <a href="https://github.com/wingfailam">wingfailam</a>'
-    });
 
-    tiles.addTo(this.map);
+    console.log('????????????',this.width)
+    if(this.width>768){
+
+      const tiles = L.tileLayer(this.url, {
+        // maxZoom: 18,
+        // minZoom: 3,
+        attribution: '&copy; 公車地圖 by <a href="https://github.com/wingfailam">wingfailam</a>'
+      });
+  
+      tiles.addTo(this.map);
+    }
+
+
+
+
 
     // let geojsonFeature = {
     //   "type": "Feature",

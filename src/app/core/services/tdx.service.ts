@@ -61,6 +61,8 @@ export class TdxService {
   shape!: any;
   public time: number = 30000;
 
+  url:string = "https://api.mapbox.com/styles/v1/pandaoao/ckuib6yuz54fd17qm2bkxqeqt/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoicGFuZGFvYW8iLCJhIjoiY2t1aWI0dGgwMm1oejMycTZ2YWt5dWw3OSJ9.zMxDIA087Tqzl8DdTIr0Gg";
+  isChanged:boolean=false;
   // selectedBus: string = "TXG300";
   // selectedBusName: string = "300";
 
@@ -656,6 +658,16 @@ export class TdxService {
   handleChange() {
     console.log('change');
     this.change = !this.change;
+    if(!this.isChanged){
+      console.log("SETTTTT tileLayer")
+      const tiles = L.tileLayer(this.url, {
+        // maxZoom: 18,
+        // minZoom: 3,
+        attribution: '&copy; 公車地圖 by <a href="https://github.com/wingfailam">wingfailam</a>'
+      });
+  
+      tiles.addTo(this.map);
+    }
   }
 
 }
