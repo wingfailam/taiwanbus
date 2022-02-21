@@ -29,6 +29,8 @@ export class MainSelectComponent implements ControlValueAccessor {
   ];
   @Input() bindLabel:string="CityName";
   @Input() bindValue:string="City";
+  @Output('change') change = new EventEmitter<string>();
+
 
   value: string ='';
   isDropdown:boolean=false;
@@ -97,6 +99,7 @@ export class MainSelectComponent implements ControlValueAccessor {
   handleClick(selectedValue:string){
     console.log('click')
     this.selectedValue = selectedValue;
+    this.change.emit('click');
   }
 
   handleFocusOut(){

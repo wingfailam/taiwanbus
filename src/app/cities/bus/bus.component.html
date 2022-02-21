@@ -1,14 +1,14 @@
 <!-- <p>selectedCity:{{selectedCity}}</p> -->
 <h3>公車路線</h3>
 <div class="bus">
-    <div *ngIf="width>768">
+    <div *ngIf="0||width>768">
         <ng-select [items]=" bus$ | async" bindLabel="RouteName.Zh_tw" bindValue="RouteUID" [(ngModel)]="
     selectedBus" (change)="selectedBusChange()">
         </ng-select>
     </div>
-    <div *ngIf="width<768" class="city-container">
+    <div *ngIf="1&&width<768" class="city-container">
         <app-main-select msg="無此公車。" [items]=" bus$ | async" bindLabel="RouteName.Zh_tw" bindValue="RouteUID"
-            [(ngModel)]="selectedBus" (ngModelChange)="selectedBusChange()">
+            [(ngModel)]="selectedBus" (change)="selectedBusChange()">
         </app-main-select>
     </div>
 </div>
