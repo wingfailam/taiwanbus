@@ -674,7 +674,7 @@ export class TdxService {
     this.change = !this.change;
     if(!this.isChanged){
       const tiles = L.tileLayer(this.url, {
-        attribution: '&copy; 公車地圖 by <a href="https://github.com/wingfailam">wingfailam</a>'
+        attribution: '<a href="https://www.mapbox.com/">Mapbox</a> &copy; 公車地圖 by <a href="https://www.wingfailam.com/">wingfailam</a>'
       });
   
       tiles.addTo(this.map);

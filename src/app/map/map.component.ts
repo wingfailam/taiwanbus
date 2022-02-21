@@ -59,7 +59,7 @@ export class MapComponent implements AfterViewInit {
       const tiles = L.tileLayer(this.url, {
         // maxZoom: 18,
         // minZoom: 3,
-        attribution: '&copy; 公車地圖 by <a href="https://github.com/wingfailam">wingfailam</a>'
+        attribution: '<a href="https://www.mapbox.com/">Mapbox</a> &copy; 公車地圖 by <a href="https://www.wingfailam.com/">wingfailam</a>'
       });
   
       tiles.addTo(this.map);

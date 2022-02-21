@@ -102,6 +102,10 @@ export class MainSelectComponent implements ControlValueAccessor {
     this.change.emit('click');
   }
 
+  handelClose(){
+    this.qureyString=""
+  }
+
   handleFocusOut(){
     setTimeout(() => {
       this.isDropdown = false;
