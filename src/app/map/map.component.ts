@@ -24,6 +24,13 @@ export class MapComponent implements AfterViewInit {
     this.tdxService.map = value
   }
 
+  set lat(val: number){
+    this.tdxService.lat = val;
+  }
+  set lon(val: number){
+    this.tdxService.lat = val;
+  }
+
 
   constructor(private tdxService: TdxService) {
     // this.shape$.subscribe(data=>{
@@ -34,30 +41,19 @@ export class MapComponent implements AfterViewInit {
   }
   initMap(): void {
     this.map = L.map('map', {
-
       // center: this.tdxService.location,
       // zoom: 12
     });
 
+    // 定位
     this.map.locate().on('locationfound', (e:any)=>{
+      this.lat = e.latitude;
+      this.lon = e.longitude;
       const circle = L.circle([e.latitude, e.longitude],{radius: 100,color:'#7e8e50'});
-      const width = document.body.clientWidth;
       this.map.addLayer(circle);
-      if(width<768){
-        
-        this.map.setView([e.latitude, e.longitude],14);
-
-
-      }
     });
-  
 
-
-
-    // url="	https://tile.openstreetmap.org/${z}/${x}/${y}.png";
-
-
-    console.log('????????????',this.width)
+    // 如果非手機才會在一開始就載入圖磚（流量控管）
     if(this.width>768){
 
       const tiles = L.tileLayer(this.url, {
@@ -68,32 +64,6 @@ export class MapComponent implements AfterViewInit {
   
       tiles.addTo(this.map);
     }
-
-
-
-
-
-    // let geojsonFeature = {
-    //   "type": "Feature",
-    //   "properties": {
-    //     "name": "Coors Field",
-    //     "amenity": "Baseball Stadium",
-    //     "popupContent": "This is where the Rockies play!"
-    //   },
-    //   "geometry": {
-    //     "type": "Point",
-    //     "coordinates": [-104.99404, 39.75621]
-    //   }
-    // };
-    // let line = {
-    //   "type": "LineString",
-    //   "coordinates": [[120.68614, 24.13765], [120.68652, 24.13778]]
-    // };
-    // let point = {
-    //   "type": "Point",
-    //   "coordinates": [-104.99404, 39.75621]
-    // }
-
 
   }
 

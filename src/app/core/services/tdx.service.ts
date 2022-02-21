@@ -55,6 +55,9 @@ export class TdxService {
   lineLayer: any;
   stopsMarkersLayer: any;
   busMarkersLayer: any;
+  lat:number=0;
+  lon:number=0;
+  
 
 
   shape$!: Observable<any[]>;
@@ -72,6 +75,7 @@ export class TdxService {
 
     // 取得視窗寬度
     this.width = document.body.clientWidth;
+    console.log("===============",this.width, )
     // 監聽視窗寬度
     window.onresize = (event:any) => {
       this.width = document.body.clientWidth;
@@ -87,6 +91,7 @@ export class TdxService {
 
       //先取得所有路線
       // this.getRoutesDataSelect();
+
 
       this.getAsyncData();
 
@@ -642,6 +647,15 @@ export class TdxService {
 
     // 取得站點位置
     await this.getStopsData()
+
+    if(!(this.lat&&this.lon)){
+      // 定位
+      await this.locate();
+    }
+
+    // 取得附近站牌
+    this.getNearStops();
+
     //  取得並填入預估時間
     this.getEstimatesDataFill()
 
@@ -656,10 +670,33 @@ export class TdxService {
 
   change = false;
   handleChange() {
-    console.log('change');
+
     this.change = !this.change;
     if(!this.isChanged){
-      console.log("SETTTTT tileLayer")
+      const tiles = L.tileLayer(this.url, {
+        attribution: '&copy; 公車地圖 by <a href="https://github.com/wingfailam">wingfailam</a>'
+      });
+  
+      tiles.addTo(this.map);
+    }
+  }
+
+  initMap(): void {
+    this.map = L.map('map', {
+      // center: this.tdxService.location,
+      // zoom: 12
+    });
+
+    // 定位
+    this.map.locate().on('locationfound', (e:any)=>{
+      const circle = L.circle([e.latitude, e.longitude],{radius: 100,color:'#7e8e50'});
+      const width = document.body.clientWidth;
+      this.map.addLayer(circle);
+    });
+
+    // 如果非手機才會在一開始就載入圖磚（流量控管）
+    if(this.width>768){
+
       const tiles = L.tileLayer(this.url, {
         // maxZoom: 18,
         // minZoom: 3,
@@ -668,6 +705,73 @@ export class TdxService {
   
       tiles.addTo(this.map);
     }
+
   }
+
+  getNearStops(){
+
+  console.log('getNearStops');
+
+    if(this.width<768){
+
+      const distances = this.stops.map(el=>{
+          return this.getDistanceFromLatLng(
+            el.StopPosition.PositionLat, 
+            el.StopPosition.PositionLon,
+            this.lat,
+            this.lon,
+            false
+            )
+        })
+      const nearestIndex = this.indexOfSmallest(distances);
+      console.log('nearDistance', distances[nearestIndex]);
+      // 如果該路線最近的站牌在 20 km 內則以該站牌為中心顯示，並且放大
+      if(distances[nearestIndex] < 20){
+        console.log('nearDistance', this.stops[nearestIndex].StopName.Zh_tw);
+        console.log('nearDistance',  this.stops[nearestIndex].StopPosition.PositionLat, this.stops[nearestIndex].StopPosition.PositionLon);
+        this.map.flyTo([ this.stops[nearestIndex].StopPosition.PositionLat, this.stops[nearestIndex].StopPosition.PositionLon],14);
+      }
+     
+    }
+  }
+
+  /* Distance between two lat/lng coordinates in km using the Haversine formula */
+  getDistanceFromLatLng(lat1:number, lng1:number, lat2:number, lng2:number, miles:boolean) { // miles optional
+    if (typeof miles === "undefined"){miles=false;}
+    function deg2rad(deg:number){return deg * (Math.PI/180);}
+    function square(x:number){return Math.pow(x, 2);}
+    var r=6371; // radius of the earth in km
+    lat1=deg2rad(lat1);
+    lat2=deg2rad(lat2);
+    var lat_dif=lat2-lat1;
+    var lng_dif=deg2rad(lng2-lng1);
+    var a=square(Math.sin(lat_dif/2))+Math.cos(lat1)*Math.cos(lat2)*square(Math.sin(lng_dif/2));
+    var d=2*r*Math.asin(Math.sqrt(a));
+    if (miles){return d * 0.621371;} //return miles
+    else{return d;} //return km
+  }
+  /* Copyright 2016, Chris Youderian, SimpleMaps, http://simplemaps.com/resources/location-distance
+  Released under MIT license - https://opensource.org/licenses/MIT */ 
+
+   indexOfSmallest(a:number[]) {
+    let lowest = 0;
+    for (let i = 1; i < a.length; i++) {
+     if (a[i] < a[lowest]) lowest = i;
+    }
+    return lowest;
+   }
+   
+   locate(){
+     return new Promise(resolve=>{
+        // 定位成功
+        this.map.locate().on('locationfound', (e:any)=>{
+          this.lat = e.latitude;
+          this.lon = e.longitude;
+          const circle = L.circle([e.latitude, e.longitude],{radius: 100,color:'#7e8e50'});
+          this.map.addLayer(circle); 
+          resolve(true);
+        });
+     })
+   }
 
 }
