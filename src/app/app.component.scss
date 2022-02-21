@@ -101,6 +101,7 @@ h2 {
     position: relative;
     height: 72px;
     @media (max-width: 768px) {
+        margin-top: 5px;
         height: 32px;
     }
     display: flex;
