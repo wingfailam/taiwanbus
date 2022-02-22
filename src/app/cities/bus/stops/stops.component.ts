@@ -15,6 +15,7 @@ import { TdxService } from 'src/app/core/services/tdx.service';
 export class StopsComponent implements OnInit {
 
 
+  test:string="test";
   // direction: string = "0";
   get time() {
     return this.tdxService.time;

@@ -1,0 +1,27 @@
+$style: kingnet;
+// $style: fai;
+
+$PrimaryColor: #46b39a;
+$SystemMidGray: #999999;
+$SystemMagenta: #db2959;
+$SystemGrayBlue: #4289a7;
+$SystemBorderGray: #eaeaea;
+$SystemBgGray: #efeff4;
+
+$button_active: #e5b567;
+$button_default: #808080;
+$button_update: #bee2df;
+$button_arriving: #ac4142;
+$button_comming: #6c99bb;
+$li_hover: #e0e0e0;
+$background_color: #fff;
+
+@if $style == kingnet {
+    $button_active: $PrimaryColor;
+    $button_default: $SystemMidGray;
+    $button_update: #fcf3cc;
+    $button_arriving: $SystemMagenta;
+    $button_comming: $SystemGrayBlue;
+    $li_hover: $SystemBorderGray;
+    $background_color: #fefefe;
+}

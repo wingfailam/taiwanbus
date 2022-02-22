@@ -1,3 +1,5 @@
+@import "../../../styles/theme.scss";
+
 .bus {
     position: relative;
 }
@@ -18,12 +20,12 @@ li {
         border-radius: 24px;
     }
 }
-#info {
+#button_update {
     padding: 5px;
     height: 23px;
     &:hover {
         // background-color: #a8e4df;
-        background-color: #bee2df;
+        background-color: $button_update;
     }
 }
 #space {
@@ -49,9 +51,15 @@ li {
     justify-content: center;
     height: 100%;
     width: 85px;
-    background-color: #808080;
+    background-color: $button_default;
     color: #fff;
     border-radius: 14px;
+    &.arriving {
+        background-color: $button_arriving;
+    }
+    &.comming {
+        background-color: $button_comming;
+    }
 }
 
 button {
@@ -65,15 +73,13 @@ button {
     min-width: 150px;
     // text-decoration: none;
     border: none;
-    background-color: #808080;
+    background-color: $button_default;
     color: #fff;
     border-radius: 25px;
     font-size: 1.17em;
 
     &.active {
-        background-color: #e5b567;
-        // background-color: #cc7833;
-        // color: #707070;
+        background-color: $button_active;
     }
     // &::before {
     //     content: "";

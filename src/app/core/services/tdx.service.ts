@@ -42,6 +42,12 @@ export class TdxService {
     };
   }
 
+  style:string="kingnet";
+  button_arriving:string="#ac4142";
+  button_coming:string="#6c99bb";
+  button_default:string="808080";
+
+
   width: number = 0;
   selectedCity: string = "Taichung";
   selectedBus: string = "TXG300";
@@ -72,6 +78,12 @@ export class TdxService {
   // selectedChange: Subject<any> = new Subject<any>();
 
   constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router) {
+
+    if(this.style == "kingnet"){  
+      this.button_arriving="#ac4142";
+      this.button_coming="#6c99bb";
+      this.button_default="808080";
+    }
 
     // 取得視窗寬度
     this.width = document.body.clientWidth;
@@ -378,9 +390,11 @@ export class TdxService {
           if (estimate.EstimateTime) {
             if (estimate.EstimateTime / 60 <= 1) {
               stop.Estimates = "進站中";
+              stop.Status = "arriving";
               stop.color = '#ac4142';
             } else if (estimate.EstimateTime / 60 <= 3) {
               stop.Estimates = "即將到站";
+              stop.Status = "comming";
               stop.color = '#6c99bb';
             } else {
               stop.Estimates = Math.floor(estimate.EstimateTime / 60) + ' 分';
@@ -488,12 +502,15 @@ export class TdxService {
       if (el.EstimateTime) {
         if (el.EstimateTime / 60 <= 1) {
           route.Status = "進站中";
+          route.StatusEn = "arriving";
           route.color = '#ac4142';
         } else if (el.EstimateTime / 60 <= 3) {
           route.Status = "即將到站";
+          route.StatusEn = "comming";
           route.color = '#6c99bb';
         } else {
           route.Status = Math.floor(el.EstimateTime / 60) + ' 分';
+          route.StatusEn = "default";
           route.color = '#808080';
         }
       } else if (el.NextBusTime) {
@@ -508,7 +525,7 @@ export class TdxService {
 
         <h4>${el.RouteName.Zh_tw}</h4>
 
-        <span id="status" style="background-color: ${route.color}">${route.Status}</span> 
+        <span id="status" class="${route.StatusEn}" style="background-color: ${route.color}">${route.Status}</span> 
 
       </li>
       `;
