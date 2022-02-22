@@ -8,6 +8,6 @@
         </div>
         <div *ngIf="filteredItems.length < 1" class="disable">{{msg}}</div>
     </div>
-    <div class="icon close" (click)="handelClose()"></div>
-    <div class="icon down"></div>
+    <div class="icon close" (click)="handelClose()" [class]="{active: isDropdown}"></div>
+    <div class=" icon down" [class]="{active: !isDropdown}"></div>
 </div>

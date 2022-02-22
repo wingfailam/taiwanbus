@@ -399,6 +399,7 @@ export class TdxService {
             } else {
               stop.Estimates = Math.floor(estimate.EstimateTime / 60) + ' 分';
               stop.color = '#808080';
+              stop.Status = 'in-minutes'
             }
           } else if (estimate.NextBusTime) {
             stop.NextBusTime = estimate.NextBusTime;

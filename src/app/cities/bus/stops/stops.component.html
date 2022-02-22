@@ -6,12 +6,12 @@
 <!-- <ng-select [items]="stop$ | async" bindLabel="RouteName.Zh_tw" autofocus bindValue="RouteUID" [(ngModel)]="selectedBusName">
 </ng-select> -->
 <div class="departureAndDestination">
-    <button (click)="changeDir('0')" [ngClass]="{'active': direction === '0'}">往 {{destination}}</button>
-    <button (click)="changeDir('1')" [ngClass]="{'active': direction === '1'}">往 {{departure}}</button>
+    <button (click)="changeDir('0')" [ngClass]="{'active': direction === '0', 'big': true}">往 {{destination}}</button>
+    <button (click)="changeDir('1')" [ngClass]="{'active': direction === '1', 'big': true}">往 {{departure}}</button>
 </div>
 
 <li id="button_update" (click)="update()">
-    <span>共 {{stops.length}} 站</span><span id="space"></span><span id="time">{{time/1000}} 秒後更新</span>
+    <span>共 {{stops.length}} 站</span><span id="space"></span><span class="caption13">{{time/1000}} 秒後更新</span>
 
 </li>
 <li *ngFor="let stop of stops; index as i; " (click)="liOnClick(stop)">
@@ -28,7 +28,7 @@
     </span>
 
 </li>
-<li class="ptx">
+<li class="ptx caption13">
     <span>資料來源：<a href="https://ptx.transportdata.tw/PTX/">交通部PTX服務平臺</a>
     </span>
 

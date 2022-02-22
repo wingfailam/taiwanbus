@@ -53,12 +53,23 @@ li {
     width: 85px;
     background-color: $button_default;
     color: #fff;
+    color: $MainDarkGray;
+    border: 1px solid $MainDarkGray;
     border-radius: 14px;
+    &.arriving,
+    &.comming,
+    &.in-minutes {
+        color: #fff;
+        border: none;
+    }
     &.arriving {
         background-color: $button_arriving;
     }
     &.comming {
         background-color: $button_comming;
+    }
+    &.in-minutes {
+        background-color: $button_in_minutes;
     }
 }
 
@@ -78,6 +89,9 @@ button {
     border-radius: 25px;
     font-size: 1.17em;
 
+    &.big {
+        background-color: $button_default_big;
+    }
     &.active {
         background-color: $button_active;
     }
@@ -116,7 +130,6 @@ button {
     justify-content: center;
     span,
     span a {
-        color: #aaa;
-        font-size: 10px;
+        color: $SystemMidGray;
     }
 }

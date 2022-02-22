@@ -25,8 +25,13 @@ export class AppComponent implements OnInit {
   get change() {
     return this.tdxService.change;
   }
+
   handleChange() {
     this.tdxService.handleChange();
+  }
+
+  get width(){
+    return this.tdxService.width;
   }
 
 }
