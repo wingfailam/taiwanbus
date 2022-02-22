@@ -10,7 +10,6 @@ import { AppComponent } from './app.component';
 import { CitiesComponent } from './cities/cities.component';
 import { BusComponent } from './cities/bus/bus.component';
 import { StopsComponent } from './cities/bus/stops/stops.component';
-import { EstimateComponent } from './cities/bus/stops/estimate/estimate.component';
 import { MapComponent } from './map/map.component';
 import { MainSelectComponent } from './main-select/main-select.component';
 
@@ -24,7 +23,6 @@ import { MainSelectComponent } from './main-select/main-select.component';
     CitiesComponent,
     BusComponent,
     StopsComponent,
-    EstimateComponent,
     MapComponent,
     MainSelectComponent,
 
