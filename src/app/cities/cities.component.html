@@ -8,7 +8,7 @@
 
 <div *ngIf="1&&width<768" class="city-container">
     <app-main-select msg="無此城市。" [items]=" cities$ | async" bindLabel="CityName" bindValue="City"
-        [(ngModel)]="selectedCity" (change)="changeCity()">
+        [(ngModel)]="selectedCity" (change)="changeCity()" placeholder="例如：臺中市">
     </app-main-select>
 </div>
 

@@ -1,5 +1,5 @@
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
-import { Component, OnInit, Input, Output, forwardRef, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, forwardRef, EventEmitter, ViewChild } from '@angular/core';
 
 export const MAIN_SELECT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -14,6 +14,7 @@ export const MAIN_SELECT_VALUE_ACCESSOR: any = {
   providers: [MAIN_SELECT_VALUE_ACCESSOR]
 })
 export class MainSelectComponent implements ControlValueAccessor {
+  @ViewChild('input') input:any;
 
   @Input() msg = '無此選項。';
 
@@ -30,6 +31,7 @@ export class MainSelectComponent implements ControlValueAccessor {
   @Input() bindLabel:string="CityName";
   @Input() bindValue:string="City";
   @Output('change') change = new EventEmitter<string>();
+  @Input() placeholder:string="請輸入關鍵字"
 
 
   value: string ='';
@@ -42,13 +44,17 @@ export class MainSelectComponent implements ControlValueAccessor {
 
   set selectedValue(value) { //寫進NgModel的值
     this.value = value;
+    this.qureyString =  this.selectedLabel;
     this.notifyValueChange(); //通知父層值已修改
   }
 
   get selectedLabel(){
     if(this.items){
       const selectedObj = this.items.find((el:any)=>this.deepValue(el,this.bindValue) === this.selectedValue);
-      return this.deepValue(selectedObj,this.bindLabel);
+      const result = this.deepValue(selectedObj,this.bindLabel);
+      console.log('// this.qureyString = result;')
+      this.qureyString = result;
+      return result;
     }else{
       return "";
     }
@@ -95,9 +101,29 @@ export class MainSelectComponent implements ControlValueAccessor {
   registerOnTouched(fn: any): void {
     this.onTouched = fn;
   }
-  constructor() { }
+  constructor() { 
 
-  ngOnInit(): void {
+    // this.qureyString =  this.selectedLabel;
+    // console.log('this.qureyString =  this.selectedLabel;')
+    // console.log(this.qureyString)
+    // console.log( this.selectedLabel)
+
+document.addEventListener("click",(e)=>{
+  console.log(e)
+  this.isDropdown = false;
+})
+  }
+
+  ngOnChanges(): void {
+    this.qureyString =  this.selectedLabel;
+    // if(true){
+    //   console.log('this.selectedValue',this.selectedValue)
+    //   this.qureyString =  this.selectedLabel;
+    //   console.log('this.qureyString =  this.selectedLabel;')
+    //   console.log(this.qureyString)
+    //   console.log( this.selectedLabel)
+    // }
+
   }
 
   handleClick(selectedValue:string){
@@ -107,13 +133,32 @@ export class MainSelectComponent implements ControlValueAccessor {
   }
 
   handelClose(){
+    // this.isDropdown = true;
+    // this.input.nativeElement.focus();
+    if(this.qureyString === ""){
+      this.isDropdown = false;
+    }
     this.qureyString=""
+    console.log('handelClose',this.qureyString)
+    // this.input.focus();
+    console.log(this.input)
+    // this.input.nativeElement.focus();
   }
 
-  handleFocusOut(){
+  handleFocusOut($event:Event){
+
     setTimeout(() => {
+      console.log('handleFocusOut',$event)
+      console.log('activeElement',document.activeElement);
+       // This is the element that has focus
       this.isDropdown = false;
+
     }, 100);
+
+    // $event.stopPropagation();
+
+
   }
+
 
 }

@@ -1,6 +1,6 @@
 <div class="select-container">
-    <input [placeholder]="selectedLabel" [(ngModel)]="qureyString" (focus)="isDropdown = true"
-        (focusout)="handleFocusOut()">
+    <input #input [placeholder]="placeholder" [(ngModel)]="qureyString" (focus)="isDropdown = true"
+        (click)="isDropdown = true;$event.stopPropagation()">
     <div *ngIf="isDropdown" class="main-selector">
         <div *ngFor="let item of filteredItems" (click)="handleClick(item[bindValue])">
             <!-- {{item[bindLabel]}} -->
@@ -8,6 +8,6 @@
         </div>
         <div *ngIf="filteredItems.length < 1" class="disable">{{msg}}</div>
     </div>
-    <div class="icon close" (click)="handelClose()" [class]="{active: isDropdown}"></div>
-    <div class=" icon down" [class]="{active: !isDropdown}"></div>
+    <div class="icon close" (click)="handelClose();$event.stopPropagation()" [class]="{active: isDropdown}"></div>
+    <div class="icon down" (click)="isDropdown = true;$event.stopPropagation()" [class]="{active: !isDropdown}"></div>
 </div>

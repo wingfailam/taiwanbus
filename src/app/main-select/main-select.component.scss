@@ -22,7 +22,7 @@ input {
         cursor: unset;
     }
     &::placeholder {
-        color: #505050;
+        color: #ccc;
         opacity: 1;
     }
 }
@@ -61,6 +61,7 @@ input {
     }
 }
 .icon {
+    cursor: pointer;
     height: 13px;
     width: 13px;
     background-image: url("../../assets/icons/control-arrow-down.svg");

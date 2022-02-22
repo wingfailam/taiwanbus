@@ -12,6 +12,7 @@ import { BusComponent } from './cities/bus/bus.component';
 import { StopsComponent } from './cities/bus/stops/stops.component';
 import { MapComponent } from './map/map.component';
 import { MainSelectComponent } from './main-select/main-select.component';
+import { ClickStopPropagationDirective } from './click-stop-propagation.directive';
 
 
 
@@ -25,6 +26,7 @@ import { MainSelectComponent } from './main-select/main-select.component';
     StopsComponent,
     MapComponent,
     MainSelectComponent,
+    ClickStopPropagationDirective,
 
 
 
