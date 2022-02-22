@@ -46,8 +46,13 @@ export class MainSelectComponent implements ControlValueAccessor {
   }
 
   get selectedLabel(){
-    const selectedObj = this.items.find((el:any)=>this.deepValue(el,this.bindValue) === this.selectedValue);
-    return this.deepValue(selectedObj,this.bindLabel);
+    if(this.items){
+      const selectedObj = this.items.find((el:any)=>this.deepValue(el,this.bindValue) === this.selectedValue);
+      return this.deepValue(selectedObj,this.bindLabel);
+    }else{
+      return "";
+    }
+
   }
 
   get filteredItems(){
@@ -73,7 +78,6 @@ export class MainSelectComponent implements ControlValueAccessor {
     if (this.onChange) {
       this.onChange(this.selectedValue);
     }
-    console.log(this.selectedValue);
   }
 
   onChange: ((value: string) => {}) | undefined;

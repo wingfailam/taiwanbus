@@ -75,7 +75,7 @@ export class TdxService {
 
     // 取得視窗寬度
     this.width = document.body.clientWidth;
-    console.log("===============",this.width, )
+
     // 監聽視窗寬度
     window.onresize = (event:any) => {
       this.width = document.body.clientWidth;
@@ -192,7 +192,7 @@ export class TdxService {
 
   getStops(selectedCity: string, selectedBus: string, selectedBusName: string, direction: string) {
     let stopsUrl = `https://ptx.transportdata.tw/MOTC/v2/Bus/StopOfRoute/City/${selectedCity}/${selectedBusName}?$filter=Direction%20eq%20${direction}%20and%20RouteUID%20eq%20'${selectedBus}'&$format=JSON`
-    console.log(stopsUrl);
+
     return this.http.get<any[]>(stopsUrl, this.getHttpOptions());
   }
 
@@ -244,7 +244,6 @@ export class TdxService {
     // let url = `https://ptx.transportdata.tw/MOTC/v2/Bus/Shape/City/${this.selectedCity}/${this.selectedBusName}?$filter=Direction%20eq%20${this.direction}%20and%20%20RouteUID%20eq%20'${this.selectedBus}'&$format=JSON`;
     let url = `https://ptx.transportdata.tw/MOTC/v2/Bus/Shape/City/${this.selectedCity}/${this.selectedBusName}?$filter=RouteUID%20eq%20'${this.selectedBus}'&$format=JSON`;
 
-    console.log('getshape', url)
     return this.http.get<any[]>(url, this.getHttpOptions());
   }
   processShape = (geometry: string) => {
@@ -288,7 +287,6 @@ export class TdxService {
           this.shape = this.processShape(data[0]['Geometry']);
         }
 
-        console.log(this.shape);
         if (this.lineLayer) {
           this.map.removeLayer(this.lineLayer);
 
@@ -404,6 +402,7 @@ export class TdxService {
 
 
   getEstimatesDataFill() {
+    console.log('getEstimatesDataFill');
 
     this.getEstimates(this.selectedCity, this.selectedBus, this.selectedBusName, this.direction).subscribe((data: any[]) => {
       this.estimates = data;
@@ -648,13 +647,14 @@ export class TdxService {
     // 取得站點位置
     await this.getStopsData()
 
-    if(!(this.lat&&this.lon)){
-      // 定位
-      await this.locate();
-    }
+
+
 
     // 取得附近站牌
     this.getNearStops();
+
+
+
 
     //  取得並填入預估時間
     this.getEstimatesDataFill()
@@ -681,36 +681,13 @@ export class TdxService {
     }
   }
 
-  initMap(): void {
-    this.map = L.map('map', {
-      // center: this.tdxService.location,
-      // zoom: 12
-    });
+  async getNearStops(){
 
-    // 定位
-    this.map.locate().on('locationfound', (e:any)=>{
-      const circle = L.circle([e.latitude, e.longitude],{radius: 100,color:'#7e8e50'});
-      const width = document.body.clientWidth;
-      this.map.addLayer(circle);
-    });
-
-    // 如果非手機才會在一開始就載入圖磚（流量控管）
-    if(this.width>768){
-
-      const tiles = L.tileLayer(this.url, {
-        // maxZoom: 18,
-        // minZoom: 3,
-        attribution: '&copy; 公車地圖 by <a href="https://github.com/wingfailam">wingfailam</a>'
-      });
-  
-      tiles.addTo(this.map);
+    console.log('getNearStops');
+    if(!(this.lat&&this.lon)){
+      // 定位
+      await this.locate();
     }
-
-  }
-
-  getNearStops(){
-
-  console.log('getNearStops');
 
     if(this.width<768){
 

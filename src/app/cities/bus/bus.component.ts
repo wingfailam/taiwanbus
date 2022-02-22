@@ -38,7 +38,6 @@ export class BusComponent implements OnInit {
 
     this.bus$.subscribe((busArr)=>{
       this.busArr = busArr;
-      console.log('busArr',busArr)
     })
 
   }
