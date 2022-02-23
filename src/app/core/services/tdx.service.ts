@@ -12,10 +12,9 @@ import { async } from '@angular/core/testing';
 import { makeBindingParser } from '@angular/compiler';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TdxService {
-
   getAuthorizationHeader() {
     let AppID = '705e9a212c3242ed9a2fa2355b84f418';
     let AppKey = 'o2tSBueG3Dtk4o--mJKUv5kmGlE';
@@ -25,8 +24,13 @@ export class TdxService {
     ShaObj.setHMACKey(AppKey, 'TEXT');
     ShaObj.update('x-date: ' + GMTString);
     let HMAC = ShaObj.getHMAC('B64');
-    let Authorization = 'hmac username=\"' + AppID + '\", algorithm=\"hmac-sha1\", headers=\"x-date\", signature=\"' + HMAC + '\"';
-    return { 'Authorization': Authorization, 'X-Date': GMTString };
+    let Authorization =
+      'hmac username="' +
+      AppID +
+      '", algorithm="hmac-sha1", headers="x-date", signature="' +
+      HMAC +
+      '"';
+    return { Authorization: Authorization, 'X-Date': GMTString };
   }
 
   // httpOptions = {
@@ -37,22 +41,21 @@ export class TdxService {
   getHttpOptions() {
     return {
       headers: new HttpHeaders({
-        ...this.getAuthorizationHeader()
-      })
+        ...this.getAuthorizationHeader(),
+      }),
     };
   }
 
-  style:string="kingnet";
-  button_arriving:string="#ac4142";
-  button_coming:string="#6c99bb";
-  button_default:string="808080";
-
+  style: string = 'kingnet';
+  button_arriving: string = '#ac4142';
+  button_coming: string = '#6c99bb';
+  button_default: string = '808080';
 
   width: number = 0;
-  selectedCity: string = "Taichung";
-  selectedBus: string = "TXG300";
-  selectedBusName: string = "300";
-  direction: string = "0";
+  selectedCity: string = 'Taichung';
+  selectedBus: string = 'TXG300';
+  selectedBusName: string = '300';
+  direction: string = '0';
   selectedStopUID: string = 'TXG13567';
   stopDetail: any[] = [];
   markerOnClickEvent: any;
@@ -61,80 +64,68 @@ export class TdxService {
   lineLayer: any;
   stopsMarkersLayer: any;
   busMarkersLayer: any;
-  lat:number=0;
-  lon:number=0;
-  
-
+  lat: number = 0;
+  lon: number = 0;
 
   shape$!: Observable<any[]>;
   shape!: any;
   public time: number = 30000;
 
-  url:string = "https://api.mapbox.com/styles/v1/pandaoao/ckuib6yuz54fd17qm2bkxqeqt/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoicGFuZGFvYW8iLCJhIjoiY2t1aWI0dGgwMm1oejMycTZ2YWt5dWw3OSJ9.zMxDIA087Tqzl8DdTIr0Gg";
-  isChanged:boolean=false;
+  url: string =
+    'https://api.mapbox.com/styles/v1/pandaoao/ckuib6yuz54fd17qm2bkxqeqt/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoicGFuZGFvYW8iLCJhIjoiY2t1aWI0dGgwMm1oejMycTZ2YWt5dWw3OSJ9.zMxDIA087Tqzl8DdTIr0Gg';
+  isChanged: boolean = false;
   // selectedBus: string = "TXG300";
   // selectedBusName: string = "300";
 
   // selectedChange: Subject<any> = new Subject<any>();
 
-  constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router) {
-
-    if(this.style == "kingnet"){  
-      this.button_arriving="#ac4142";
-      this.button_coming="#6c99bb";
-      this.button_default="808080";
+  constructor(
+    private http: HttpClient,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {
+    if (this.style == 'kingnet') {
+      this.button_arriving = '#ac4142';
+      this.button_coming = '#6c99bb';
+      this.button_default = '808080';
     }
 
     // 取得視窗寬度
     this.width = document.body.clientWidth;
 
     // 監聽視窗寬度
-    window.onresize = (event:any) => {
+    window.onresize = (event: any) => {
       this.width = document.body.clientWidth;
-    }
+    };
 
     this.route.queryParams.subscribe(params => {
-
       this.selectedCity = params['city'] || this.selectedCity;
       this.selectedBus = params['bus'] || this.selectedBus;
       this.selectedBusName = params['busName'] || this.selectedBusName;
       this.direction = params['direction'] || this.direction;
 
-
       //先取得所有路線
       // this.getRoutesDataSelect();
 
-
       this.getAsyncData();
 
-
-
-
-
       // this.setBusMarker();
-
-
-
-
     });
     interval(1000).subscribe(val => {
       // console.log(this.time / 1000, '秒')
       if (this.time === 0) {
         this.update();
-
       } else {
-        this.time -= 1000
+        this.time -= 1000;
       }
-
-    })
-
+    });
   }
   update() {
-    this.time = 30000
+    this.time = 30000;
     // 更新預估時間
     this.getEstimatesDataFill();
     // 更新公車位置
-    this.setBusPositions()
+    this.setBusPositions();
     // 更新選取站點預估時間
     if (this.markerOnClickEvent) {
       this.markerOnClick(this.markerOnClickEvent, this.selectedStopUID);
@@ -142,27 +133,28 @@ export class TdxService {
   }
 
   getCities(): Observable<any[]> {
-    let citiesUrl = 'https://gist.motc.gov.tw/gist_api/V3/Map/Basic/City?$format=JSON';
-    return this.http.get<any[]>(citiesUrl, this.getHttpOptions())
+    let citiesUrl =
+      'https://gist.motc.gov.tw/gist_api/V3/Map/Basic/City?$format=JSON';
+    return this.http.get<any[]>(citiesUrl, this.getHttpOptions());
   }
 
   getRoutes(selectedCity: string): Observable<any[]> {
     let busUrl = `https://ptx.transportdata.tw/MOTC/v2/Bus/Route/City/${selectedCity}?$format=JSON`;
-    return this.http.get<any[]>(busUrl, this.getHttpOptions())
+    return this.http.get<any[]>(busUrl, this.getHttpOptions());
   }
 
   bus$!: Observable<any[]>;
   busArr!: any[];
 
-
   selectedBusObj!: any;
 
   getName() {
-    this.selectedBusObj = this.busArr.find(bus => bus.RouteUID === this.selectedBus);
+    this.selectedBusObj = this.busArr.find(
+      bus => bus.RouteUID === this.selectedBus
+    );
 
     if (this.selectedBusObj) {
       this.selectedBusName = this.selectedBusObj['RouteName']['Zh_tw'];
-
     }
   }
   getRoutesDataSelect() {
@@ -175,78 +167,77 @@ export class TdxService {
       this.bus$ = this.getRoutes(this.selectedCity);
 
       this.bus$.subscribe(data => {
-console.log('bus',data)
+        console.log('bus', data);
         this.busArr = data;
         // 如果找不到 就給第一台
         // 初始值一定找得到 不會進來
         if (data.find(el => el.RouteUID === selectedBus) === undefined) {
-
           this.selectedBus = this.busArr[0]['RouteUID'];
 
           // 如果找不到指定公車，消除參數
-          this.router.navigate(
-            [],
-            {
-              relativeTo: this.route,
-              queryParams: { bus: null, busName: null },
-              queryParamsHandling: 'merge',
-              replaceUrl: true
-            });
-
+          this.router.navigate([], {
+            relativeTo: this.route,
+            queryParams: { bus: null, busName: null },
+            queryParamsHandling: 'merge',
+            replaceUrl: true,
+          });
         }
         this.getName();
         resolve(true);
-
       });
-    })
-
+    });
   }
 
-  getStops(selectedCity: string, selectedBus: string, selectedBusName: string, direction: string) {
-    let stopsUrl = `https://ptx.transportdata.tw/MOTC/v2/Bus/StopOfRoute/City/${selectedCity}/${selectedBusName}?$filter=Direction%20eq%20${direction}%20and%20RouteUID%20eq%20'${selectedBus}'&$format=JSON`
+  getStops(
+    selectedCity: string,
+    selectedBus: string,
+    selectedBusName: string,
+    direction: string
+  ) {
+    let stopsUrl = `https://ptx.transportdata.tw/MOTC/v2/Bus/StopOfRoute/City/${selectedCity}/${selectedBusName}?$filter=Direction%20eq%20${direction}%20and%20RouteUID%20eq%20'${selectedBus}'&$format=JSON`;
 
     return this.http.get<any[]>(stopsUrl, this.getHttpOptions());
   }
 
-
-
-
-  getDepartureAndDestination(selectedCity: string, selectedBus: string, selectedBusName: string) {
+  getDepartureAndDestination(
+    selectedCity: string,
+    selectedBus: string,
+    selectedBusName: string
+  ) {
     let stopsUrl = `https://ptx.transportdata.tw/MOTC/v2/Bus/Route/City/${selectedCity}/${selectedBusName}?$filter=RouteUID%20eq%20'${selectedBus}'&$format=JSON`;
     return this.http.get<any[]>(stopsUrl, this.getHttpOptions());
   }
   getBusPositions() {
-    let url = `https://ptx.transportdata.tw/MOTC/v2/Bus/RealTimeByFrequency/City/${this.selectedCity}/${this.selectedBusName}?$filter=Direction%20eq%20${this.direction}%20and%20RouteUID%20eq%20'${this.selectedBus}'&$format=JSON    `
+    let url = `https://ptx.transportdata.tw/MOTC/v2/Bus/RealTimeByFrequency/City/${this.selectedCity}/${this.selectedBusName}?$filter=Direction%20eq%20${this.direction}%20and%20RouteUID%20eq%20'${this.selectedBus}'&$format=JSON    `;
     return this.http.get<any[]>(url, this.getHttpOptions());
   }
   getBusPositionsData() {
     return new Promise(resolve => {
       this.getBusPositions().subscribe(data => {
-        resolve(data)
-      })
-    })
+        resolve(data);
+      });
+    });
   }
   async setBusPositions() {
-
     let layerGroup: L.Layer[] = [];
-
 
     let data = <any[]>await this.getBusPositionsData();
     // 放在前面清空會少清第一次不知為何非同步到
     if (this.busMarkersLayer) {
-      this.map.removeLayer(this.busMarkersLayer)
-    };
+      this.map.removeLayer(this.busMarkersLayer);
+    }
     data.forEach(el => {
-
       // coordinates.push([el.StopPosition.PositionLon,el.StopPosition.PositionLat])
-      let marker = L.marker([el.BusPosition.PositionLat, el.BusPosition.PositionLon], {
-        icon: L.icon({
-          iconUrl: 'assets/images/bus.gif',
-          iconSize: [55, 55],
-        })
-      }).bindPopup(el.PlateNumb, { className: "plateNumb", closeButton: false });
+      let marker = L.marker(
+        [el.BusPosition.PositionLat, el.BusPosition.PositionLon],
+        {
+          icon: L.icon({
+            iconUrl: 'assets/images/bus.gif',
+            iconSize: [55, 55],
+          }),
+        }
+      ).bindPopup(el.PlateNumb, { className: 'plateNumb', closeButton: false });
       layerGroup.push(marker);
-
     });
     this.busMarkersLayer = L.layerGroup(layerGroup);
     this.busMarkersLayer.addTo(this.map);
@@ -260,74 +251,72 @@ console.log('bus',data)
   }
   processShape = (geometry: string) => {
     // geometry = "LINESTRING(120.57661 24.22592,120.57965 24.22111,120.58007 24.21982,120.58041 24.21724,120.58131 24.20892,120.58141 24.20664,120.58115 24.20464,120.57962 24.19052,120.57963 24.19013,120.57979 24.18962,120.57996 24.18927,120.58030 24.18875,120.58073 24.18836,120.58116 24.18806,120.58615 24.18587,120.59358 24.18272,120.59494 24.18225,120.59636 24.18198,120.59749 24.18191,120.59864 24.18191,120.59955 24.18201,120.60038 24.18217,120.60361 24.18294,120.60659 24.18360,120.60977 24.18440,120.61079 24.18449,120.61175 24.18443,120.61283 24.18416,120.61430 24.18356,120.61577 24.18280,120.61730 24.18203,120.61929 24.18108,120.62332 24.17903,120.63060 24.17537,120.63503 24.17215,120.63959 24.16868,120.64177 24.16708,120.64350 24.16587,120.64414 24.16555,120.64807 24.16342,120.65599 24.15905,120.65925 24.15729,120.66117 24.15626,120.66313 24.15517,120.66652 24.15323,120.66728 24.15279,120.66790 24.15237,120.66860 24.15187,120.66929 24.15131,120.66990 24.15072,120.67177 24.14908,120.67482 24.14643,120.67653 24.14496,120.67806 24.14361,120.68014 24.14181,120.68225 24.13999,120.68397 24.13850,120.68453 24.13783,120.68462 24.13776,120.68486 24.13752,120.68493 24.13752,120.68503 24.13750,120.68548 24.13755,120.68585 24.13760,120.68614 24.13765,120.68652 24.13778)";
-    let temp = geometry.split("(");
+    let temp = geometry.split('(');
     let coordinates: number[][] = [];
-    temp = temp[1].split(")");
-    temp = temp[0].split(",");
+    temp = temp[1].split(')');
+    temp = temp[0].split(',');
     temp.forEach(el => {
       // console.log(el.split(" "));
       // coordinates.push(el.split(" "))
-      let temp = el.split(" ").map(el => {
-
+      let temp = el.split(' ').map(el => {
         return parseFloat(el);
-      })
+      });
       // 雙北多一個空格讓人處理資料困難
       if (temp.length > 2) {
         temp.splice(0, 1);
       }
-      coordinates.push(temp)
+      coordinates.push(temp);
     });
     let result = {
-      "type": "LineString",
-      "coordinates": coordinates
-
-    }
+      type: 'LineString',
+      coordinates: coordinates,
+    };
     // console.log(result);
     return result;
-  }
+  };
 
   getShapeData() {
     this.getShape().subscribe(data => {
-
       if (data.length > 0) {
         if (data.length > 1) {
-          let el = data.find(el => el.Direction == this.direction)
+          let el = data.find(el => el.Direction == this.direction);
           this.shape = this.processShape(el['Geometry']);
         } else {
-          console.log('taipei')
+          console.log('taipei');
           console.log(data);
           this.shape = this.processShape(data[0]['Geometry']);
         }
 
         if (this.lineLayer) {
           this.map.removeLayer(this.lineLayer);
-
         }
         this.lineLayer = L.geoJSON(<geojson.LineString>this.shape, {
-          style: { "color": "#6c99bb" }
+          style: { color: '#6c99bb' },
         });
-        this.map.fitBounds(this.lineLayer.getBounds())
+        this.map.fitBounds(this.lineLayer.getBounds());
         this.lineLayer.addTo(this.map);
       }
-
-
-
-    })
+    });
   }
 
   stops: any[] = [];
   estimates: any[] = [];
   departure!: string;
-  destination!: string
-
-
+  destination!: string;
 
   async setDepartureAndDestination() {
-    let departureAndDestination = <any>await this.getDepartureAndDestinationData()
+    let departureAndDestination = <any>(
+      await this.getDepartureAndDestinationData()
+    );
     this.departure = departureAndDestination.DepartureStopNameZh;
     this.destination = departureAndDestination.DestinationStopNameZh;
   }
-  getEstimates(selectedCity: string, selectedBus: string, selectedBusName: string, direction: string) {
+  getEstimates(
+    selectedCity: string,
+    selectedBus: string,
+    selectedBusName: string,
+    direction: string
+  ) {
     let stopsUrl = `https://ptx.transportdata.tw/MOTC/v2/Bus/EstimatedTimeOfArrival/City/${selectedCity}/${selectedBusName}?$filter=Direction%20eq%20${direction}%20and%20RouteUID%20eq%20'${selectedBus}'&$format=JSON`;
     return this.http.get<any[]>(stopsUrl, this.getHttpOptions());
   }
@@ -351,7 +340,7 @@ console.log('bus',data)
           } else {
             return 1;
           }
-        })
+        });
         data = data.sort(function (a, b) {
           if (a.EstimateTime && b.EstimateTime) {
             return a.EstimateTime - b.EstimateTime;
@@ -359,126 +348,130 @@ console.log('bus',data)
             return a.EstimateTime ? -1 : 1;
           } else {
             if (a.NextBusTime && b.NextBusTime) {
-              return <any>new Date(a.NextBusTime) - <any>new Date(b.NextBusTime);
+              return (
+                <any>new Date(a.NextBusTime) - <any>new Date(b.NextBusTime)
+              );
             } else if (a.NextBusTime || b.NextBusTime) {
-              return a.NextBusTime ? -1 : 1
+              return a.NextBusTime ? -1 : 1;
             } else {
               return 1;
             }
-
           }
           // return <any>new Date(b.NextBusTime) - <any>new Date(a.NextBusTime);
-        })
+        });
         this.stopDetail = data;
         console.log(this.stopDetail);
         resolve(this.stopDetail);
-      })
-    })
-
+      });
+    });
   }
 
   fillEstimates() {
-    this.stops = this.stops.map((stop) => {
+    this.stops = this.stops.map(stop => {
       // 清空上一筆資料
       stop.Estimates = null;
       stop.NextBusTime = null;
       stop.Status = null;
 
-      this.estimates.map((estimate) => {
+      this.estimates.map(estimate => {
         if (stop.StopUID === estimate.StopUID) {
-
           if (estimate.EstimateTime) {
             if (estimate.EstimateTime / 60 <= 1) {
-              stop.Estimates = "進站中";
-              stop.Status = "arriving";
+              stop.Estimates = '進站中';
+              stop.Status = 'arriving';
               stop.color = '#ac4142';
             } else if (estimate.EstimateTime / 60 <= 3) {
-              stop.Estimates = "即將到站";
-              stop.Status = "comming";
+              stop.Estimates = '即將到站';
+              stop.Status = 'comming';
               stop.color = '#6c99bb';
             } else {
               stop.Estimates = Math.floor(estimate.EstimateTime / 60) + ' 分';
               stop.color = '#808080';
-              stop.Status = 'in-minutes'
+              stop.Status = 'in-minutes';
             }
           } else if (estimate.NextBusTime) {
             stop.NextBusTime = estimate.NextBusTime;
           } else {
-            stop.Status = "-";
-            stop.Estimates = "-"
+            stop.Status = '-';
+            stop.Estimates = '-';
           }
-
         }
       });
       return stop;
-    })
+    });
   }
-
-
-
 
   getEstimatesDataFill() {
     console.log('getEstimatesDataFill');
 
-    this.getEstimates(this.selectedCity, this.selectedBus, this.selectedBusName, this.direction).subscribe((data: any[]) => {
+    this.getEstimates(
+      this.selectedCity,
+      this.selectedBus,
+      this.selectedBusName,
+      this.direction
+    ).subscribe((data: any[]) => {
       this.estimates = data;
       this.fillEstimates();
-    })
-
+    });
   }
   getStopsData() {
     return new Promise(resolve => {
-      this.getStops(this.selectedCity, this.selectedBus, this.selectedBusName, this.direction).subscribe((data: any[]) => {
+      this.getStops(
+        this.selectedCity,
+        this.selectedBus,
+        this.selectedBusName,
+        this.direction
+      ).subscribe((data: any[]) => {
         // console.log(data);
 
         if (data[0]) {
-          this.stops = data[0]["Stops"]
+          this.stops = data[0]['Stops'];
           resolve(true);
-
         }
-
-
-
       });
-    })
-
+    });
   }
 
   getDepartureAndDestinationData() {
     return new Promise(resolve => {
-      this.getDepartureAndDestination(this.selectedCity, this.selectedBus, this.selectedBusName).subscribe((data: any[]) => {
+      this.getDepartureAndDestination(
+        this.selectedCity,
+        this.selectedBus,
+        this.selectedBusName
+      ).subscribe((data: any[]) => {
         resolve(data[0]);
-      })
-    })
+      });
+    });
   }
 
-
   setStopsMarkers() {
-    console.log('this.stops', this.stops)
+    console.log('this.stops', this.stops);
 
     let layerGroup: L.Layer[] = [];
     if (this.stopsMarkersLayer) this.map.removeLayer(this.stopsMarkersLayer);
     // this.map.removeLayer(this.stopsMarkersLayer);
 
     this.stops.forEach(el => {
-
       // coordinates.push([el.StopPosition.PositionLon,el.StopPosition.PositionLat])
-      let marker = L.marker([el.StopPosition.PositionLat, el.StopPosition.PositionLon], {
-        icon: L.divIcon({
-          className: 'markers',
-          html: el.StopSequence
-        })
-      }).bindPopup('', { className: "stopDetail", closeButton: false }).on(<any>'click', e => this.markerOnClick(e, el.StopUID));
+      let marker = L.marker(
+        [el.StopPosition.PositionLat, el.StopPosition.PositionLon],
+        {
+          icon: L.divIcon({
+            className: 'markers',
+            html: el.StopSequence,
+          }),
+        }
+      )
+        .bindPopup('', { className: 'stopDetail', closeButton: false })
+        .on(<any>'click', e => this.markerOnClick(e, el.StopUID));
       el.Marker = marker;
       layerGroup.push(marker);
-
     });
-    console.log('this.stops', this.stops)
-    console.log('layerGroup', layerGroup)
+    console.log('this.stops', this.stops);
+    console.log('layerGroup', layerGroup);
     this.stopsMarkersLayer = L.layerGroup(layerGroup);
     this.stopsMarkersLayer.addTo(this.map);
     console.log(this.stopsMarkersLayer);
-
   }
 
   async markerOnClick(e: any, stopUID: string): Promise<any> {
@@ -487,7 +480,7 @@ console.log('bus',data)
     e.target.closePopup();
 
     this.markerOnClickEvent = e;
-    console.log("e", e);
+    console.log('e', e);
     let popup = e.target.getPopup();
     this.selectedStopUID = stopUID;
     await this.getEstimatesByStopData();
@@ -503,23 +496,25 @@ console.log('bus',data)
       let route: any = {};
       if (el.EstimateTime) {
         if (el.EstimateTime / 60 <= 1) {
-          route.Status = "進站中";
-          route.StatusEn = "arriving";
+          route.Status = '進站中';
+          route.StatusEn = 'arriving';
           route.color = '#ac4142';
         } else if (el.EstimateTime / 60 <= 3) {
-          route.Status = "即將到站";
-          route.StatusEn = "comming";
+          route.Status = '即將到站';
+          route.StatusEn = 'comming';
           route.color = '#6c99bb';
         } else {
           route.Status = Math.floor(el.EstimateTime / 60) + ' 分';
-          route.StatusEn = "default";
+          route.StatusEn = 'default';
           route.color = '#808080';
         }
       } else if (el.NextBusTime) {
-        route.Status = new Date(el.NextBusTime).getHours().toString().padStart(2, "0") + ':' + new Date(el.NextBusTime).getMinutes().toString().padStart(2, "0");
-
+        route.Status =
+          new Date(el.NextBusTime).getHours().toString().padStart(2, '0') +
+          ':' +
+          new Date(el.NextBusTime).getMinutes().toString().padStart(2, '0');
       } else {
-        route.Status = "-";
+        route.Status = '-';
       }
       // console.log(route)
       let temp = `
@@ -532,8 +527,7 @@ console.log('bus',data)
       </li>
       `;
       html += temp;
-
-    })
+    });
     html += `</div>`;
 
     popup.setContent(html);
@@ -543,33 +537,25 @@ console.log('bus',data)
     return true;
   }
 
-
-
-
-
   async test(stop: any): Promise<any> {
     await this.getEstimatesByStopData();
   }
   testClick() {
     console.log(this.time);
     // this.test('TXG13567');
-
   }
-
-
 
   // }
   async liOnClick(stop: any): Promise<any> {
     this.handleChange();
     console.log(stop);
     // stop.Marker.openPopup();
-    let latlng = [stop.Marker._latlng.lat + 0.025, stop.Marker._latlng.lng]
+    let latlng = [stop.Marker._latlng.lat + 0.025, stop.Marker._latlng.lng];
     this.map.flyTo(latlng, 12);
 
     this.markerOnClick({ target: stop.Marker }, stop.StopUID);
 
     stop.Marker.openPopup();
-
 
     // this.selectedStopUID = stop.StopUID;
     // console.log(this.selectedStopUID);
@@ -607,7 +593,7 @@ console.log('bus',data)
 
     //         <h4>${el.RouteName.Zh_tw}</h4>
 
-    //         <span id="status" style="background-color: ${route.color}">${route.Status}</span> 
+    //         <span id="status" style="background-color: ${route.color}">${route.Status}</span>
 
     //       </li>
     //       `;
@@ -615,7 +601,6 @@ console.log('bus',data)
 
     // })
     // html += `</div>`;
-
 
     // let marker = L.marker([stop.StopPosition.PositionLat, stop.StopPosition.PositionLon], {
     //   icon: L.divIcon({
@@ -627,15 +612,9 @@ console.log('bus',data)
     // marker.addTo(this.map);
     // // popup.setContent(html);
     // return true;
-
-
   }
 
-
-
-
   setBusMarker() {
-
     let ll = [24.22592, 120.57661];
     // let ll = [120.57661, 24.22592];
 
@@ -645,7 +624,7 @@ console.log('bus',data)
         iconSize: [55, 55],
       }),
       // zIndexOffset: 100
-    })
+    });
     marker.addTo(this.map);
   }
 
@@ -664,19 +643,13 @@ console.log('bus',data)
     this.setBusPositions();
 
     // 取得站點位置
-    await this.getStopsData()
-
-
-
+    await this.getStopsData();
 
     // 取得附近站牌
     this.getNearStops();
 
-
-
-
     //  取得並填入預估時間
-    this.getEstimatesDataFill()
+    this.getEstimatesDataFill();
 
     // 取得該路線的所有站點位置
 
@@ -689,85 +662,113 @@ console.log('bus',data)
 
   change = false;
   handleChange() {
-
     this.change = !this.change;
-    if(!this.isChanged){
+    if (!this.isChanged) {
       const tiles = L.tileLayer(this.url, {
-        attribution: '<a href="https://www.mapbox.com/">Mapbox</a> &copy; 公車地圖 by <a href="https://www.wingfailam.com/">wingfailam</a>'
+        attribution:
+          '<a href="https://www.mapbox.com/">Mapbox</a> &copy; 公車地圖 by <a href="https://www.wingfailam.com/">wingfailam</a>',
       });
-  
+
       tiles.addTo(this.map);
     }
   }
 
-  async getNearStops(){
-
+  async getNearStops() {
     console.log('getNearStops');
-    if(!(this.lat&&this.lon)){
+    if (!(this.lat && this.lon)) {
       // 定位
       await this.locate();
     }
 
-    if(this.width<768){
-
-      const distances = this.stops.map(el=>{
-          return this.getDistanceFromLatLng(
-            el.StopPosition.PositionLat, 
-            el.StopPosition.PositionLon,
-            this.lat,
-            this.lon,
-            false
-            )
-        })
+    if (this.width < 768) {
+      const distances = this.stops.map(el => {
+        return this.getDistanceFromLatLng(
+          el.StopPosition.PositionLat,
+          el.StopPosition.PositionLon,
+          this.lat,
+          this.lon,
+          false
+        );
+      });
       const nearestIndex = this.indexOfSmallest(distances);
       console.log('nearDistance', distances[nearestIndex]);
       // 如果該路線最近的站牌在 20 km 內則以該站牌為中心顯示，並且放大
-      if(distances[nearestIndex] < 20){
+      if (distances[nearestIndex] < 20) {
         console.log('nearDistance', this.stops[nearestIndex].StopName.Zh_tw);
-        console.log('nearDistance',  this.stops[nearestIndex].StopPosition.PositionLat, this.stops[nearestIndex].StopPosition.PositionLon);
-        this.map.flyTo([ this.stops[nearestIndex].StopPosition.PositionLat, this.stops[nearestIndex].StopPosition.PositionLon],14);
+        console.log(
+          'nearDistance',
+          this.stops[nearestIndex].StopPosition.PositionLat,
+          this.stops[nearestIndex].StopPosition.PositionLon
+        );
+        this.map.flyTo(
+          [
+            this.stops[nearestIndex].StopPosition.PositionLat,
+            this.stops[nearestIndex].StopPosition.PositionLon,
+          ],
+          14
+        );
       }
-     
     }
   }
 
   /* Distance between two lat/lng coordinates in km using the Haversine formula */
-  getDistanceFromLatLng(lat1:number, lng1:number, lat2:number, lng2:number, miles:boolean) { // miles optional
-    if (typeof miles === "undefined"){miles=false;}
-    function deg2rad(deg:number){return deg * (Math.PI/180);}
-    function square(x:number){return Math.pow(x, 2);}
-    var r=6371; // radius of the earth in km
-    lat1=deg2rad(lat1);
-    lat2=deg2rad(lat2);
-    var lat_dif=lat2-lat1;
-    var lng_dif=deg2rad(lng2-lng1);
-    var a=square(Math.sin(lat_dif/2))+Math.cos(lat1)*Math.cos(lat2)*square(Math.sin(lng_dif/2));
-    var d=2*r*Math.asin(Math.sqrt(a));
-    if (miles){return d * 0.621371;} //return miles
-    else{return d;} //return km
+  getDistanceFromLatLng(
+    lat1: number,
+    lng1: number,
+    lat2: number,
+    lng2: number,
+    miles: boolean
+  ) {
+    // miles optional
+    if (typeof miles === 'undefined') {
+      miles = false;
+    }
+    function deg2rad(deg: number) {
+      return deg * (Math.PI / 180);
+    }
+    function square(x: number) {
+      return Math.pow(x, 2);
+    }
+    var r = 6371; // radius of the earth in km
+    lat1 = deg2rad(lat1);
+    lat2 = deg2rad(lat2);
+    var lat_dif = lat2 - lat1;
+    var lng_dif = deg2rad(lng2 - lng1);
+    var a =
+      square(Math.sin(lat_dif / 2)) +
+      Math.cos(lat1) * Math.cos(lat2) * square(Math.sin(lng_dif / 2));
+    var d = 2 * r * Math.asin(Math.sqrt(a));
+    if (miles) {
+      return d * 0.621371;
+    } //return miles
+    else {
+      return d;
+    } //return km
   }
   /* Copyright 2016, Chris Youderian, SimpleMaps, http://simplemaps.com/resources/location-distance
-  Released under MIT license - https://opensource.org/licenses/MIT */ 
+  Released under MIT license - https://opensource.org/licenses/MIT */
 
-   indexOfSmallest(a:number[]) {
+  indexOfSmallest(a: number[]) {
     let lowest = 0;
     for (let i = 1; i < a.length; i++) {
-     if (a[i] < a[lowest]) lowest = i;
+      if (a[i] < a[lowest]) lowest = i;
     }
     return lowest;
-   }
-   
-   locate(){
-     return new Promise(resolve=>{
-        // 定位成功
-        this.map.locate().on('locationfound', (e:any)=>{
-          this.lat = e.latitude;
-          this.lon = e.longitude;
-          const circle = L.circle([e.latitude, e.longitude],{radius: 100,color:'#7e8e50'});
-          this.map.addLayer(circle); 
-          resolve(true);
-        });
-     })
-   }
+  }
 
+  locate() {
+    return new Promise(resolve => {
+      // 定位成功
+      this.map.locate().on('locationfound', (e: any) => {
+        this.lat = e.latitude;
+        this.lon = e.longitude;
+        const circle = L.circle([e.latitude, e.longitude], {
+          radius: 100,
+          color: '#7e8e50',
+        });
+        this.map.addLayer(circle);
+        resolve(true);
+      });
+    });
+  }
 }
