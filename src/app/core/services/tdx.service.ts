@@ -175,7 +175,7 @@ export class TdxService {
       this.bus$ = this.getRoutes(this.selectedCity);
 
       this.bus$.subscribe(data => {
-
+console.log('bus',data)
         this.busArr = data;
         // 如果找不到 就給第一台
         // 初始值一定找得到 不會進來
@@ -405,6 +405,7 @@ export class TdxService {
             stop.NextBusTime = estimate.NextBusTime;
           } else {
             stop.Status = "-";
+            stop.Estimates = "-"
           }
 
         }

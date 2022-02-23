@@ -1,16 +1,21 @@
 <div class="select-container">
     <input #input [placeholder]="placeholder" [(ngModel)]="qureyString" (focus)="isDropdown = true"
-        (click)="isDropdown = true;">
+        (click)="isDropdown = true;" [attr.inputmode]="inputmode">
     <!-- $event.stopPropagation() -->
     <div *ngIf="isDropdown" class="main-selector">
-        <div class="items" *ngFor="let item of filteredItems"
-            (click)="handleClick(item[bindValue]);$event.stopPropagation()">
+        <div class="items" *ngFor="let item of filteredItems" (click)="handleClick(item[bindValue])">
             <!-- {{item[bindLabel]}} -->
-            {{deepValue(item,bindLabel)}}
+
+            <!-- {{deepValue(item,bindLabel)}} -->
+            <div class="items">{{deepValue(item,bindLabel)}}</div>
+            <!-- <div>{{item.DepartureStopNameZh }}</div> -->
+            <div class="items sub-label" *ngIf="subLabel">{{getSubLabelString(item)}}</div>
         </div>
+
         <div *ngIf="filteredItems.length < 1" class="disable">{{msg}}</div>
     </div>
     <div class="icon close" (click)="handelClose();$event.stopPropagation()" [class]="{active: isDropdown}" #close>
     </div>
-    <div class="icon down" (click)="isDropdown = true;$event.stopPropagation()" [class]="{active: !isDropdown}"></div>
+    <div class="icon down" (click)="isDropdown = true;$event.stopPropagation()" [class]="{active: !isDropdown}">
+    </div>
 </div>

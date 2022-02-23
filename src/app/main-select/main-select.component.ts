@@ -33,11 +33,33 @@ export class MainSelectComponent implements ControlValueAccessor {
   @Input() bindValue:string="City";
   @Output('change') change = new EventEmitter<string>();
   @Input() placeholder:string="請輸入關鍵字"
+  @Input() inputmode:string="text";
+  @Input() subLabel:string="";
 
 
   value: string ='';
   isDropdown:boolean=false;
   qureyString = '';
+
+  getSubLabelString(o:any){
+    if(this.subLabel){
+      const arr = this.subLabel.split("+");
+
+      const newArr = arr.map(el=>{
+        const trimed = el.trim()
+
+        if(trimed[0] !== "'"
+         && trimed[trimed.length-1] !== "'"){
+           return this.deepValue(o,trimed)
+         }else{
+
+           return trimed.replace(/'/g, "");
+         }
+      })
+      return newArr.join("");
+    }
+    return ""
+  }
 
   get selectedValue() { //取得NgModel的值
     return this.value;

@@ -53,6 +53,13 @@ input {
     padding-bottom: 0px;
     overflow-y: scroll;
     div {
+        div {
+            padding: 0;
+            &.sub-label {
+                font-size: 13px;
+                color: #999;
+            }
+        }
         padding: 10px;
         cursor: pointer;
         &:hover {

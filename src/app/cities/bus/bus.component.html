@@ -8,7 +8,8 @@
     </div>
     <div *ngIf="1&&width<768" class="city-container">
         <app-main-select msg="無此公車。" [items]=" bus$ | async" bindLabel="RouteName.Zh_tw" bindValue="RouteUID"
-            [(ngModel)]="selectedBus" (change)="selectedBusChange()" placeholder="例如：300">
+            [(ngModel)]="selectedBus" (change)="selectedBusChange()" placeholder="例如：300" inputmode="numeric"
+            subLabel="DepartureStopNameZh + ' - ' + DestinationStopNameZh">
         </app-main-select>
     </div>
 </div>

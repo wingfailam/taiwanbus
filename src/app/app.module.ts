@@ -36,7 +36,8 @@ import { ClickStopPropagationDirective } from './click-stop-propagation.directiv
     AppRoutingModule,
     HttpClientModule,
     NgSelectModule,
-    FormsModule
+    FormsModule,
+
   ],
   providers: [],
   bootstrap: [AppComponent]
