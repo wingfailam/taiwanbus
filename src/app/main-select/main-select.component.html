@@ -11,7 +11,7 @@
       class="items"
       *ngFor="let item of filteredItems"
       (click)="handleClick(item[bindValue])">
-      <div class="items">{{ deepValue(item, bindLabel) }}</div>
+      <div class="items main-label">{{ deepValue(item, bindLabel) }}</div>
       <div class="items sub-label" *ngIf="subLabel">
         {{ getSubLabelString(item) }}
       </div>

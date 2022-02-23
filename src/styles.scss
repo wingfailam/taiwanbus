@@ -96,12 +96,34 @@ body {
     justify-content: center;
     height: 100%;
     width: 85px;
-    background-color: #808080;
+
     color: #fff;
     border-radius: 14px;
+    &.arriving {
+        background-color: $button_arriving;
+    }
+    &.coming {
+        background-color: $button_coming;
+    }
+    &.in-minutes {
+        background-color: $button_in_minutes;
+    }
+    &.default {
+        background-color: #fff;
+        color: $MainDarkGray;
+        border: 1px solid #999;
+    }
 }
 h3 {
     @media (max-width: 768px) {
         margin: 13px 0 13px 0;
     }
+}
+.route-id .items.main-label {
+    color: $PrimaryColor;
+    font-size: 17px;
+    font-weight: bold;
+}
+.default {
+    background-color: #fff;
 }

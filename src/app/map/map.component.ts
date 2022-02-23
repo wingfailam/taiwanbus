@@ -13,8 +13,8 @@ export class MapComponent implements AfterViewInit {
   get width() {
     return this.tdxService.width;
   }
-  get url() {
-    return this.tdxService.url;
+  get tilesUrl() {
+    return this.tdxService.tilesUrl;
   }
   get map() {
     return this.tdxService.map;
@@ -50,7 +50,7 @@ export class MapComponent implements AfterViewInit {
 
     // 如果非手機才會在一開始就載入圖磚（流量控管）
     if (this.width > 768) {
-      const tiles = L.tileLayer(this.url, {
+      const tiles = L.tileLayer(this.tilesUrl, {
         // maxZoom: 18,
         // minZoom: 3,
         attribution:

@@ -67,6 +67,6 @@ export class StopsComponent implements OnInit {
     this.tdxService.liOnClick(stop);
   }
   update() {
-    this.tdxService.update();
+    this.tdxService.updateEstimateAndBusPosition();
   }
 }

@@ -64,7 +64,7 @@ export class BusComponent implements OnInit {
         replaceUrl: true,
       });
     } else {
-      this.tdxService.getName();
+      this.tdxService.getSelectedBusName();
       this.router.navigate([], {
         relativeTo: this.route,
         queryParams: {

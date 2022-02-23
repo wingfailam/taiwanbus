@@ -52,7 +52,7 @@ li {
     border: 1px solid $MainDarkGray;
     border-radius: 14px;
     &.arriving,
-    &.comming,
+    &.coming,
     &.in-minutes {
         color: #fff;
         border: none;
@@ -60,8 +60,8 @@ li {
     &.arriving {
         background-color: $button_arriving;
     }
-    &.comming {
-        background-color: $button_comming;
+    &.coming {
+        background-color: $button_coming;
     }
     &.in-minutes {
         background-color: $button_in_minutes;
@@ -107,4 +107,9 @@ button {
     span a {
         color: $SystemMidGray;
     }
+}
+
+.items.main-label {
+    color: $PrimaryColor;
+    font-size: 18px;
 }
