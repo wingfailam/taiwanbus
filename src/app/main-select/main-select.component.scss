@@ -18,6 +18,7 @@ input {
 
     &:focus {
         border: 2px solid #ccc;
+        border-radius: 10px 10px 0 0;
         outline: none;
         cursor: unset;
     }
@@ -38,11 +39,17 @@ input {
     box-sizing: border-box;
     border-radius: 0 0 10px 10px;
     top: 28px;
+    top: 35px;
 
     border: 2px solid #ccc;
-    border-top: 0;
+    border-top: none;
+    border-top: 1px solid #ccc;
 
-    padding-top: 3px;
+    div:first-of-type {
+        // border-top: 1px solid #ccc;
+    }
+
+    // padding-top: 3px;
     padding-bottom: 0px;
     overflow-y: scroll;
     div {

@@ -15,6 +15,7 @@ export const MAIN_SELECT_VALUE_ACCESSOR: any = {
 })
 export class MainSelectComponent implements ControlValueAccessor {
   @ViewChild('input') input:any;
+  @ViewChild('close') close:any;
 
   @Input() msg = '無此選項。';
 
@@ -108,9 +109,18 @@ export class MainSelectComponent implements ControlValueAccessor {
     // console.log(this.qureyString)
     // console.log( this.selectedLabel)
 
-document.addEventListener("click",(e)=>{
+document.addEventListener("mouseup",(e)=>{
   console.log(e)
   this.isDropdown = false;
+  e.stopPropagation()
+  console.log(e.target)
+  console.log(this.input.nativeElement)
+  if(e.target === this.input.nativeElement 
+    || e.target === this.close.nativeElement){
+    this.isDropdown = true;
+  }else{
+    this.isDropdown = false;
+  }
 })
   }
 
@@ -142,7 +152,7 @@ document.addEventListener("click",(e)=>{
     console.log('handelClose',this.qureyString)
     // this.input.focus();
     console.log(this.input)
-    // this.input.nativeElement.focus();
+    this.input.nativeElement.focus();
   }
 
   handleFocusOut($event:Event){
