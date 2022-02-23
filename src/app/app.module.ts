@@ -12,11 +12,6 @@ import { BusComponent } from './cities/bus/bus.component';
 import { StopsComponent } from './cities/bus/stops/stops.component';
 import { MapComponent } from './map/map.component';
 import { MainSelectComponent } from './main-select/main-select.component';
-import { ClickStopPropagationDirective } from './click-stop-propagation.directive';
-
-
-
-
 
 @NgModule({
   declarations: [
@@ -26,10 +21,6 @@ import { ClickStopPropagationDirective } from './click-stop-propagation.directiv
     StopsComponent,
     MapComponent,
     MainSelectComponent,
-    ClickStopPropagationDirective,
-
-
-
   ],
   imports: [
     BrowserModule,
@@ -37,9 +28,8 @@ import { ClickStopPropagationDirective } from './click-stop-propagation.directiv
     HttpClientModule,
     NgSelectModule,
     FormsModule,
-
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

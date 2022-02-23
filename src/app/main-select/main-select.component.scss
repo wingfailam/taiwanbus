@@ -7,8 +7,7 @@ input {
     cursor: pointer;
     width: 100%;
     box-sizing: border-box;
-    // height: 36px;
-    // font-size: 16px;
+
     height: 40px;
     font-size: 17px;
     outline: none;
@@ -45,11 +44,6 @@ input {
     border-top: none;
     border-top: 1px solid #ccc;
 
-    div:first-of-type {
-        // border-top: 1px solid #ccc;
-    }
-
-    // padding-top: 3px;
     padding-bottom: 0px;
     overflow-y: scroll;
     div {
@@ -84,10 +78,10 @@ input {
     position: absolute;
     right: 15px;
     top: 14px;
-    // padding: 5px;
+
     box-sizing: border-box;
 
-    filter: opacity(0.7) /* ...and on and on... */;
+    filter: opacity(0.7);
     display: none;
     &.active {
         display: block;
@@ -95,5 +89,4 @@ input {
 }
 .close {
     background-image: url("../../assets/icons/close.svg");
-    // right: 35px;
 }
