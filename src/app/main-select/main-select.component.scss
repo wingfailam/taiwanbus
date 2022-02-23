@@ -69,14 +69,17 @@ input {
 }
 .icon {
     cursor: pointer;
-    height: 13px;
-    width: 13px;
+    height: 15px;
+    width: 15px;
     background-image: url("../../assets/icons/control-arrow-down.svg");
     background-position: center;
     background-size: contain;
     position: absolute;
     right: 15px;
     top: 14px;
+    // padding: 5px;
+    box-sizing: border-box;
+
     filter: opacity(0.7) /* ...and on and on... */;
     display: none;
     &.active {

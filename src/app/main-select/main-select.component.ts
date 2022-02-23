@@ -1,5 +1,5 @@
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
-import { Component, OnInit, Input, Output, forwardRef, EventEmitter, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, Output, forwardRef, EventEmitter, ViewChild, QueryList, ElementRef } from '@angular/core';
 
 export const MAIN_SELECT_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -109,44 +109,52 @@ export class MainSelectComponent implements ControlValueAccessor {
     // console.log(this.qureyString)
     // console.log( this.selectedLabel)
 
-document.addEventListener("mouseup",(e)=>{
-  console.log(e)
-  this.isDropdown = false;
-  e.stopPropagation()
-  console.log(e.target)
-  console.log(this.input.nativeElement)
+document.addEventListener("mouseup",(e:any)=>{
+  if(e.target === this.input.nativeElement ){
+    this.qureyString = ""
+  }
+  // 保持原先狀態
   if(e.target === this.input.nativeElement 
-    || e.target === this.close.nativeElement){
-    this.isDropdown = true;
+    || e.target === this.close.nativeElement
+    || e.target.classList.contains("items")){
+    return
   }else{
     this.isDropdown = false;
   }
+
+
 })
   }
 
   ngOnChanges(): void {
     this.qureyString =  this.selectedLabel;
-    // if(true){
-    //   console.log('this.selectedValue',this.selectedValue)
-    //   this.qureyString =  this.selectedLabel;
-    //   console.log('this.qureyString =  this.selectedLabel;')
-    //   console.log(this.qureyString)
-    //   console.log( this.selectedLabel)
-    // }
+  }
 
+  ngAfterViewInit(): void {
+    // const cells = this.itemsRef.toArray();
+    // console.log(cells[1].nativeElement);
+    // console.log(cells[1].nativeElement.innerHTML);
   }
 
   handleClick(selectedValue:string){
     console.log('click')
     this.selectedValue = selectedValue;
     this.change.emit('click');
+    this.isDropdown = false;
   }
 
   handelClose(){
     // this.isDropdown = true;
     // this.input.nativeElement.focus();
     if(this.qureyString === ""){
-      this.isDropdown = false;
+      
+      setTimeout(() => {
+        console.log('test')
+        this.isDropdown = false;
+        this.input.nativeElement.blur();
+      }, 100);
+
+
     }
     this.qureyString=""
     console.log('handelClose',this.qureyString)

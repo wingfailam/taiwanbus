@@ -3,7 +3,8 @@
         (click)="isDropdown = true;">
     <!-- $event.stopPropagation() -->
     <div *ngIf="isDropdown" class="main-selector">
-        <div *ngFor="let item of filteredItems" (click)="handleClick(item[bindValue])">
+        <div class="items" *ngFor="let item of filteredItems"
+            (click)="handleClick(item[bindValue]);$event.stopPropagation()">
             <!-- {{item[bindLabel]}} -->
             {{deepValue(item,bindLabel)}}
         </div>
