@@ -1,15 +1,25 @@
 <h3>縣市</h3>
 
-<div *ngIf="0||width>768">
-    <ng-select [items]="cities$ | async" bindLabel="CityName" bindValue="City" [(ngModel)]="selectedCity"
-        (change)="changeCity()">
-    </ng-select>
+<div *ngIf="0 || width > 768">
+  <ng-select
+    [items]="cities$ | async"
+    bindLabel="CityName"
+    bindValue="City"
+    [(ngModel)]="selectedCity"
+    (change)="changeCity()">
+  </ng-select>
 </div>
 
-<div *ngIf="1&&width<768" class="city-container">
-    <app-main-select msg="無此城市。" [items]=" cities$ | async" bindLabel="CityName" bindValue="City"
-        [(ngModel)]="selectedCity" (change)="changeCity()" placeholder="例如：臺中市">
-    </app-main-select>
+<div *ngIf="1 && width < 768" class="city-container">
+  <app-main-select
+    msg="無此城市。"
+    [items]="cities$ | async"
+    bindLabel="CityName"
+    bindValue="City"
+    [(ngModel)]="selectedCity"
+    (change)="changeCity()"
+    placeholder="例如：臺中市">
+  </app-main-select>
 </div>
 
 <app-bus></app-bus>

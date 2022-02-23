@@ -1,7 +1,5 @@
 import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-// import { resolve } from 'dns';
-// import { promises, resolve } from 'dns';
 import { Observable } from 'rxjs';
 import { TdxService } from 'src/app/core/services/tdx.service';
 
@@ -13,7 +11,7 @@ import { TdxService } from 'src/app/core/services/tdx.service';
 })
 export class StopsComponent implements OnInit {
   test: string = 'test';
-  // direction: string = "0";
+
   get time() {
     return this.tdxService.time;
   }
@@ -40,18 +38,7 @@ export class StopsComponent implements OnInit {
     private tdxService: TdxService,
     private route: ActivatedRoute,
     private router: Router
-  ) {
-    // this.route.queryParams.subscribe(params => {
-    //   if ('city' in params || ('bus' in params && 'busName' in params)) {
-    //     console.log("查詢", this.selectedCity, '之', this.selectedBus, '的公車');
-    //     console.log(this.selectedBusName);
-    //     // console.log("TTTTT test getStopsWithoutName")
-    //     // let test = this.tdxService.getStopsWithoutName(this.selectedCity, this.selectedBus, "0");
-    //     // console.log("TTTTT test getStopsWithoutName", test);
-    //   }
-    //   this.tdxService.getStopsAllData();
-    // });
-  }
+  ) {}
 
   get selectedCity() {
     return this.tdxService.selectedCity;
@@ -64,22 +51,16 @@ export class StopsComponent implements OnInit {
     return this.tdxService.selectedBusName;
   }
   ngOnInit(): void {
-    // this.route.queryParams.subscribe(params => {
-    //   this.direction = params['direction'] || "0";
-    // });
-    // this.getAll();
-    // this.liOnClick("liOnClick");
+    return;
   }
 
   changeDir(dir: string) {
     this.direction = dir;
-
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: { direction: dir },
       queryParamsHandling: 'merge',
     });
-    // this.tdxService.getStopsAllData();
     this.tdxService.getAsyncData();
   }
   liOnClick(stop: string) {
