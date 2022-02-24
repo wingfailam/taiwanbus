@@ -1,0 +1,55 @@
+$style: kingnet;
+// $style: fai;
+
+$PrimaryColor: #46b39a;
+$SystemMidGray: #999999;
+$SystemMagenta: #db2959;
+$SystemGrayBlue: #4289a7;
+$SystemBorderGray: #eaeaea;
+$SystemBgGray: #efeff4;
+$SystemBorderGray: #d2d2d2;
+$SystemMidGray: #999999;
+$MainDarkGray: #484848;
+
+$button_active: #e5b567;
+$button_default: #fefefe;
+$button_update: #bee2df;
+$button_arriving: #ac4142;
+$button_coming: #6c99bb;
+$li_hover: #e0e0e0;
+$background_color: #fff;
+$button_in_minutes: $SystemMidGray;
+$button_default_big: $SystemMidGray;
+$main_label: #e5b567;
+$root_path: "/taiwanbus";
+
+@if $style == kingnet {
+    $button_active: $PrimaryColor;
+    $button_default: #fefefe;
+    // $button_default: #eaeaea;
+    $button_update: #fcf3cc;
+    $button_arriving: $SystemMagenta;
+    $button_coming: $SystemGrayBlue;
+    $li_hover: $SystemBorderGray;
+    $background_color: #fefefe;
+    $button_in_minutes: $SystemMidGray;
+    $button_default_big: $SystemMidGray;
+    $main_label: $PrimaryColor;
+    $root_path: "";
+}
+
+h2 {
+    font-size: 27px;
+}
+
+h3 {
+    font-size: 21px;
+}
+
+.caption13 {
+    font-size: 13px;
+}
+
+* {
+    color: $MainDarkGray;
+}

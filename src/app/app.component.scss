@@ -1,3 +1,4 @@
+@import "../app/styles/theme.scss";
 .app-container {
     display: flex;
     width: 100%;
@@ -10,18 +11,14 @@
 .select-container {
     width: 400px;
     overflow-y: scroll;
-    // overflow-x: hidden;
-    // margin: 10px;
     padding: 10px;
     @media (max-width: 768px) {
         width: auto;
-        // width: 100%;
     }
 }
 .map-container {
     flex-grow: 1;
     height: 100%;
-    // width: 100%;
     @media (max-width: 768px) {
         width: 100%;
     }
@@ -30,9 +27,6 @@
 .map-container {
     @media (max-width: 768px) {
         margin: 0 auto;
-        // width: auto;
-
-        // width: 100vw;
         display: block;
     }
 }
@@ -48,7 +42,6 @@
     cursor: pointer;
     display: none !important;
     position: fixed;
-    // position: absolute;
     right: 15px;
     bottom: 30px;
     width: 50px;
@@ -68,9 +61,8 @@
         height: 50%;
         display: inline-block;
 
-        background-image: url(/assets/images/change.png);
+        background-image: url($root_path + "/assets/icons/reverse-horizontal.svg");
         background-position: center;
-        // background-size: cover;
         background-size: contain;
         background-repeat: no-repeat;
     }
@@ -79,7 +71,6 @@
     }
     @media (max-width: 768px) {
         display: block !important;
-        // opacity: 0.7;
     }
 }
 
@@ -95,16 +86,17 @@ img {
 }
 h2 {
     display: inline;
-    // margin-bottom: 10px;
 }
 .nav {
     position: relative;
     height: 72px;
     @media (max-width: 768px) {
+        @if $style == "kingnet" {
+            display: none;
+        }
         margin-top: 5px;
         height: 32px;
     }
     display: flex;
-    // justify-content: space-between;
     align-items: center;
 }

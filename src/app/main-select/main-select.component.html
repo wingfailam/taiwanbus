@@ -1,13 +1,31 @@
 <div class="select-container">
-    <input [placeholder]="selectedLabel" [(ngModel)]="qureyString" (focus)="isDropdown = true"
-        (focusout)="handleFocusOut()">
-    <div *ngIf="isDropdown" class="main-selector">
-        <div *ngFor="let item of filteredItems" (click)="handleClick(item[bindValue])">
-            <!-- {{item[bindLabel]}} -->
-            {{deepValue(item,bindLabel)}}
-        </div>
-        <div *ngIf="filteredItems.length < 1" class="disable">{{msg}}</div>
+  <input
+    #input
+    [placeholder]="placeholder"
+    [(ngModel)]="qureyString"
+    (focus)="isDropdown = true"
+    (click)="isDropdown = true"
+    [attr.inputmode]="inputmode" />
+  <div *ngIf="isDropdown" class="main-selector">
+    <div
+      class="items"
+      *ngFor="let item of filteredItems"
+      (click)="handleClick(item[bindValue])">
+      <div class="items main-label">{{ deepValue(item, bindLabel) }}</div>
+      <div class="items sub-label" *ngIf="subLabel">
+        {{ getSubLabelString(item) }}
+      </div>
     </div>
-    <div class="icon close" (click)="handelClose()"></div>
-    <div class="icon down"></div>
+
+    <div *ngIf="filteredItems.length < 1" class="disable">{{ msg }}</div>
+  </div>
+  <div
+    class="icon close"
+    (click)="handelClose(); $event.stopPropagation()"
+    [class]="{ active: isDropdown }"
+    #close></div>
+  <div
+    class="icon down"
+    (click)="isDropdown = true; $event.stopPropagation()"
+    [class]="{ active: !isDropdown }"></div>
 </div>

@@ -1,7 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~@ng-select/ng-select/themes/default.theme.css";
+@import "./app/styles/theme.scss";
+
 * {
-    color: #505050;
+    // color: #505050;
     text-decoration: none;
     font-family: "Helvetica", "Arial", "LiHei Pro", "黑體-繁", "微軟正黑體", sans-serif;
 }
@@ -12,11 +14,10 @@ body {
     width: 100%;
     height: 100%;
     position: relative;
+    background-color: $background_color;
 }
 
 .markers {
-    // display: flex !important;
-    // justify-content: center;
     line-height: 27px;
     width: 27px !important;
     height: 27px !important;
@@ -29,14 +30,8 @@ body {
     color: #fff;
     background-color: #6c99bb;
     font-size: 16px;
-    @media (max-width: 768px) {
-        // width: 35px !important;
-        // height: 35px !important;
-        // line-height: 35px !important;
-    }
 }
 .plateNumb {
-    // background-color: red;
     opacity: 0.85 !important;
     bottom: -66px !important;
     left: -73px !important;
@@ -53,9 +48,6 @@ body {
     }
 }
 .stopDetail {
-    // height: 300px;
-
-    // display: flex;
     justify-content: space-between;
     border-radius: 12px;
     h3 {
@@ -63,7 +55,6 @@ body {
     }
     span {
         font-size: 15px;
-        // font-weight: bold;
     }
     h4 {
         display: inline-block;
@@ -76,8 +67,6 @@ body {
             width: 200px;
             overflow-y: scroll;
             li {
-                // height: 25px;
-                // border: #808080 1px solid;
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
@@ -93,12 +82,34 @@ body {
     justify-content: center;
     height: 100%;
     width: 85px;
-    background-color: #808080;
+
     color: #fff;
     border-radius: 14px;
+    &.arriving {
+        background-color: $button_arriving;
+    }
+    &.coming {
+        background-color: $button_coming;
+    }
+    &.in-minutes {
+        background-color: $button_in_minutes;
+    }
+    &.default {
+        background-color: #fff;
+        color: $MainDarkGray;
+        border: 1px solid #999;
+    }
 }
 h3 {
     @media (max-width: 768px) {
         margin: 13px 0 13px 0;
     }
+}
+.route-id .items.main-label {
+    color: $main_label;
+    font-size: 17px;
+    font-weight: bold;
+}
+.default {
+    background-color: #fff;
 }

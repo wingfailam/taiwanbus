@@ -1,18 +1,19 @@
 <div class="app-container">
-    <!-- 左側選單、列表 -->
-    <div class="select-container" [ngClass]="change ? 'inactive' : '' ">
-        <a (click)=" refresh()" routerLink="/" class="nav">
-            <h2>台灣公車即時動態</h2><span><img src="assets/images/bus.png" alt="busIcon"> </span>
-        </a>
+  <!-- 左側選單、列表 -->
+  <div class="select-container" [ngClass]="change ? 'inactive' : ''">
+    <a (click)="refresh()" routerLink="/" class="nav">
+      <h2>台灣公車即時動態</h2>
+      <span><img src="assets/images/bus.png" alt="busIcon" /> </span>
+    </a>
 
-        <app-cities></app-cities>
-    </div>
-    <!-- 右側地圖 -->
-    <div class="map-container" [ngClass]="!change ? 'inactive' : ''  ">
-        <app-map></app-map>
-    </div>
-    <!-- RWD 切換畫面 -->
-    <button class="change" (click)="handleChange()">
-        <span class="change-img"></span>
-    </button>
+    <app-cities></app-cities>
+  </div>
+  <!-- 右側地圖 -->
+  <div class="map-container" [ngClass]="!change ? 'inactive' : ''">
+    <app-map></app-map>
+  </div>
+  <!-- RWD 切換畫面 -->
+  <button class="change" (click)="handleChange()">
+    <span class="change-img"></span>
+  </button>
 </div>
