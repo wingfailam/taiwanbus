@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "config": "ts-node ./scripts/setenv.ts",
-    "start": "ng serve",
+    "start": "ng serve --host 0.0.0.0",
     "build": "ng build --prod --base-href=/taiwanbus/",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",

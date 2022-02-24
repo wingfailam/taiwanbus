@@ -113,3 +113,11 @@ button {
     color: $PrimaryColor;
     font-size: 18px;
 }
+.ptx-logo {
+    height: 100%;
+    width: 100px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-image: url($root_path + "/assets/images/PTX_logo淺背景使用.png");
+}
