@@ -1,6 +1,6 @@
 <h3>公車路線</h3>
 <div class="bus">
-  <div *ngIf="0 || width > 768">
+  <!-- <div *ngIf="0 || width > 768">
     <ng-select
       [items]="bus$ | async"
       bindLabel="RouteName.Zh_tw"
@@ -8,8 +8,8 @@
       [(ngModel)]="selectedBus"
       (change)="selectedBusChange()">
     </ng-select>
-  </div>
-  <div *ngIf="1 && width < 768" class="city-container">
+  </div> -->
+  <div class="city-container">
     <app-main-select
       msg="無此公車。"
       [items]="bus$ | async"
