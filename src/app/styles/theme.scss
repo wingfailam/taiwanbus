@@ -21,6 +21,7 @@ $background_color: #fff;
 $button_in_minutes: $SystemMidGray;
 $button_default_big: $SystemMidGray;
 $main_label: #e5b567;
+$root_path: "/taiwanbus";
 
 @if $style == kingnet {
     $button_active: $PrimaryColor;
@@ -34,6 +35,7 @@ $main_label: #e5b567;
     $button_in_minutes: $SystemMidGray;
     $button_default_big: $SystemMidGray;
     $main_label: $PrimaryColor;
+    $root_path: "";
 }
 
 h2 {
