@@ -508,31 +508,23 @@ export class TdxService {
   // 需要先決定公車路線才能呈現該資料
   async getAsyncData() {
     // 取得完所有路線後才能選擇路線並給予該路線的資訊
-    // 已知路線
     await this.getRoutesDataSelect();
     // 取得該路線的路線圖
     this.getShapeData();
     // 取得起迄站名稱
     this.setDepartureAndDestination();
-    //取得預估時間
-    // this.getEstimatesDataFill();
-    //取得並設置公車位置
+    // 取得並設置公車位置
     this.setBusPositions();
 
     // 取得站點位置
     await this.getStopsData();
-
     // 取得附近站牌
     this.getNearStops();
-
     //  取得並填入預估時間
     this.getEstimatesDataFill();
-
-    // 取得該路線的所有站點位置
-
     // 設置站點位置
     this.setStopsMarkers();
-
+    // 取得站點的全部路線預估時間
     this.getEstimatesByStopData();
   }
 

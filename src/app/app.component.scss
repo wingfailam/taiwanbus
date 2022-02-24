@@ -1,3 +1,4 @@
+@import "../app/styles/theme.scss";
 .app-container {
     display: flex;
     width: 100%;
@@ -91,6 +92,9 @@ h2 {
     position: relative;
     height: 72px;
     @media (max-width: 768px) {
+        @if $style == "kingnet" {
+            display: none;
+        }
         margin-top: 5px;
         height: 32px;
     }

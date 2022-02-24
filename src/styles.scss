@@ -18,8 +18,6 @@ body {
 }
 
 .markers {
-    // display: flex !important;
-    // justify-content: center;
     line-height: 27px;
     width: 27px !important;
     height: 27px !important;
@@ -32,14 +30,8 @@ body {
     color: #fff;
     background-color: #6c99bb;
     font-size: 16px;
-    @media (max-width: 768px) {
-        // width: 35px !important;
-        // height: 35px !important;
-        // line-height: 35px !important;
-    }
 }
 .plateNumb {
-    // background-color: red;
     opacity: 0.85 !important;
     bottom: -66px !important;
     left: -73px !important;
@@ -56,9 +48,6 @@ body {
     }
 }
 .stopDetail {
-    // height: 300px;
-
-    // display: flex;
     justify-content: space-between;
     border-radius: 12px;
     h3 {
@@ -66,7 +55,6 @@ body {
     }
     span {
         font-size: 15px;
-        // font-weight: bold;
     }
     h4 {
         display: inline-block;
@@ -79,8 +67,6 @@ body {
             width: 200px;
             overflow-y: scroll;
             li {
-                // height: 25px;
-                // border: #808080 1px solid;
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
@@ -120,7 +106,7 @@ h3 {
     }
 }
 .route-id .items.main-label {
-    color: $PrimaryColor;
+    color: $main_label;
     font-size: 17px;
     font-weight: bold;
 }

@@ -1,6 +1,9 @@
 # Bus-web 
 
-全台公車即時資訊網站
+台灣公車即時動態網站
+
+本專案為 [wingfailam](https://www.wingfailam.com/info) 的 Side Project，串接 [PTX 公共運輸整合資訊流通服務平臺](https://ptx.transportdata.tw/PTX/) 之資料，目前規劃上架至 [智生活 App](https://apps.apple.com/tw/app/%E4%BB%8A%E7%B6%B2%E6%99%BA%E7%94%9F%E6%B4%BB/id1071519372) `生活便利通 / 大眾交通` 中。
+### Feature
 
 * 任選縣市、公車路線、往返方向以取得所選站點資訊及預估到站時間
 * 地圖呈現公車路線、其站序、與行駛中的公車位置

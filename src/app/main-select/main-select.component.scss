@@ -53,11 +53,14 @@ input {
                 font-size: 13px;
                 color: #999;
             }
+            &:hover {
+                background-color: unset;
+            }
         }
         padding: 10px;
         cursor: pointer;
         &:hover {
-            background-color: #a6cde0;
+            background-color: rgba($color: #a6cde0, $alpha: 0.3);
         }
         &.disable {
             color: #ccc;
