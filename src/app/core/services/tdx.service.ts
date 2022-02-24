@@ -16,8 +16,10 @@ import { makeBindingParser } from '@angular/compiler';
 })
 export class TdxService {
   getAuthorizationHeader() {
-    let AppID = '705e9a212c3242ed9a2fa2355b84f418';
-    let AppKey = 'o2tSBueG3Dtk4o--mJKUv5kmGlE';
+    // let AppID = '705e9a212c3242ed9a2fa2355b84f418';
+    // let AppKey = 'o2tSBueG3Dtk4o--mJKUv5kmGlE';
+    const AppID = '8cfb982247da47e78b804403071b05c3';
+    const AppKey = 'FwagQsmudU_uvDwmFRPzFy_O9XQ';
 
     let GMTString = new Date().toUTCString();
     let ShaObj = new jsSHA('SHA-1', 'TEXT');
