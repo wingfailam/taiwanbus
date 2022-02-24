@@ -5,10 +5,12 @@
     "ng": "ng",
     "config": "ts-node ./scripts/setenv.ts",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build --prod --base-href=/taiwanbus/",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "deploy":"npx ngh --dir=dist/bus-angular-api/",
+    "page":"ng build --prod --base-href=/taiwanbus/ && npx ngh --dir=dist/bus-angular-api/"
   },
   "private": true,
   "dependencies": {
