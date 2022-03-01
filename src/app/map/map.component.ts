@@ -54,7 +54,7 @@ export class MapComponent implements AfterViewInit {
         // maxZoom: 18,
         // minZoom: 3,
         attribution:
-          '<a href="https://www.mapbox.com/">Mapbox</a> &copy; 公車地圖 by <a href="https://www.wingfailam.com/">wingfailam</a>',
+          '<a href="https://www.mapbox.com/">Mapbox</a> &copy; 公車地圖 by <a href="https://www.wingfailam.com/info/">wingfailam</a>',
       });
 
       tiles.addTo(this.map);

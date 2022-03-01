@@ -201,11 +201,15 @@ export class TdxService {
       this.map.removeLayer(this.busMarkersLayer);
     }
     data.forEach(el => {
+      const iconUrl =
+        el.Azimuth < 180
+          ? 'assets/images/bus-right.gif'
+          : 'assets/images/bus.gif';
       let marker = L.marker(
         [el.BusPosition.PositionLat, el.BusPosition.PositionLon],
         {
           icon: L.icon({
-            iconUrl: 'assets/images/bus.gif',
+            iconUrl: iconUrl,
             iconSize: [55, 55],
           }),
         }
@@ -534,7 +538,7 @@ export class TdxService {
     if (!this.isChanged) {
       const tiles = L.tileLayer(this.tilesUrl, {
         attribution:
-          '<a href="https://www.mapbox.com/">Mapbox</a> &copy; 公車地圖 by <a href="https://www.wingfailam.com/">wingfailam</a>',
+          '<a href="https://www.mapbox.com/">Mapbox</a> &copy; 公車地圖 by <a href="https://www.wingfailam.com/info/">wingfailam</a>',
       });
 
       tiles.addTo(this.map);
