@@ -1,6 +1,6 @@
 <h3>縣市</h3>
 
-<!-- <div *ngIf="0 || width > 768">
+<div *ngIf="width > 768">
   <ng-select
     [items]="cities$ | async"
     bindLabel="CityName"
@@ -8,9 +8,9 @@
     [(ngModel)]="selectedCity"
     (change)="changeCity()">
   </ng-select>
-</div> -->
+</div>
 
-<div class="city-container">
+<div class="city-container" *ngIf="width < 768">
   <app-main-select
     msg="無此城市。"
     [items]="cities$ | async"
