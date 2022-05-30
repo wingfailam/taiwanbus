@@ -2,6 +2,7 @@ import { Component, OnInit, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs';
 import { TdxService } from '../core/services/tdx.service';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import locations from './locations';
 
 @Component({
   selector: 'app-cities',
@@ -30,7 +31,7 @@ export class CitiesComponent implements OnInit {
     private route: ActivatedRoute
   ) {
     this.cities$ = this.tdxService.getCities();
-    this.cities = [];
+    this.cities = locations;
   }
 
   ngOnInit(): void {

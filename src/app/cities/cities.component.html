@@ -2,7 +2,7 @@
 
 <div *ngIf="width > 768">
   <ng-select
-    [items]="cities$ | async"
+    [items]="cities"
     bindLabel="CityName"
     bindValue="City"
     [(ngModel)]="selectedCity"
